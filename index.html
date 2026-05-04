@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Loan Qualifier | Steven Benefield - KW Clarksville</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
+:root{--kw-red:#CC0000;--kw-black:#000000;--kw-white:#FFFFFF;--kw-gray:#666;}
+/* HEADER */
+.header{background:#000;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.header-logo{display:flex;align-items:center;gap:14px;}
+.kw-logo{width:54px;height:54px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;color:#000;letter-spacing:-1px;}
+.header-title{color:#fff;}
+.header-title h1{font-size:1.25rem;font-weight:700;line-height:1.2;}
+.header-title p{font-size:0.8rem;color:#ccc;margin-top:2px;}
+.header-contact{color:#fff;font-size:0.82rem;text-align:right;line-height:1.6;}
+.header-contact a{color:#CC0000;text-decoration:none;}
+/* PROGRESS */
+.progress-bar{background:#222;padding:10px 24px;display:flex;align-items:center;gap:8px;overflow-x:auto;}
+.step-item{display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.step-num{width:26px;height:26px;border-radius:50%;border:2px solid #555;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#777;transition:all 0.3s;}
+.step-num.active{border-color:#CC0000;background:#CC0000;color:#fff;}
+.step-num.done{border-color:#CC0000;background:#CC0000;color:#fff;}
+.step-label{font-size:0.72rem;color:#777;transition:all 0.3s;}
+.step-label.active{color:#fff;}
+.step-sep{color:#444;margin:0 2px;}
+/* MAIN */
+.main{max-width:800px;margin:30px auto;padding:0 16px 60px;}
+/* CARDS */
+.card{background:#fff;border-radius:10px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.09);margin-bottom:20px;}
+.card h2{font-size:1.3rem;font-weight:700;margin-bottom:6px;color:#000;}
+.card .subtitle{font-size:0.9rem;color:#666;margin-bottom:20px;}
+/* LOAN TYPE GRID */
+.loan-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:16px;}
+.loan-btn{border:2px solid #ddd;border-radius:8px;padding:14px 10px;cursor:pointer;text-align:center;background:#fff;transition:all 0.2s;position:relative;}
+.loan-btn:hover{border-color:#CC0000;box-shadow:0 2px 8px rgba(204,0,0,0.15);}
+.loan-btn.selected{border-color:#CC0000;background:#fff5f5;}
+.loan-btn .loan-icon{font-size:1.8rem;margin-bottom:6px;}
+.loan-btn .loan-name{font-size:0.82rem;font-weight:700;color:#222;line-height:1.3;}
+.loan-btn .loan-short{font-size:0.7rem;color:#888;margin-top:3px;}
+/* LOAN INFO BOX */
+.loan-info-box{background:#f8f8f8;border-left:4px solid #CC0000;border-radius:0 8px 8px 0;padding:14px 16px;margin-top:14px;display:none;}
+.loan-info-box.visible{display:block;}
+.loan-info-box h4{font-size:0.9rem;font-weight:700;color:#CC0000;margin-bottom:4px;}
+.loan-info-box p{font-size:0.82rem;color:#444;line-height:1.5;}
+.loan-info-box .reqs{margin-top:8px;font-size:0.78rem;color:#555;}
+.loan-info-box .reqs strong{color:#000;}
+/* FORM ELEMENTS */
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;font-size:0.88rem;font-weight:600;color:#333;margin-bottom:6px;}
+.form-group label span.required{color:#CC0000;}
+.form-group input,.form-group select{width:100%;padding:11px 14px;border:1.5px solid #ddd;border-radius:7px;font-size:0.92rem;transition:border 0.2s;background:#fff;}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:#CC0000;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:540px){.form-row{grid-template-columns:1fr;}}
+/* RANGE SLIDER */
+.range-wrap{position:relative;}
+.range-wrap input[type=range]{width:100%;-webkit-appearance:none;height:6px;background:#ddd;border-radius:3px;outline:none;cursor:pointer;}
+.range-wrap input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:#CC0000;border-radius:50%;cursor:pointer;}
+.range-val{text-align:right;font-size:0.85rem;font-weight:700;color:#CC0000;margin-top:4px;}
+/* RADIO GROUP */
+.radio-group{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
+.radio-opt{display:flex;align-items:center;gap:6px;padding:8px 14px;border:1.5px solid #ddd;border-radius:20px;cursor:pointer;font-size:0.83rem;transition:all 0.2s;}
+.radio-opt input{display:none;}
+.radio-opt.selected{border-color:#CC0000;background:#fff5f5;color:#CC0000;font-weight:700;}
+.radio-opt:hover{border-color:#CC0000;}
+/* BUTTONS */
+.btn-primary{background:#CC0000;color:#fff;border:none;padding:13px 30px;border-radius:7px;font-size:1rem;font-weight:700;cursor:pointer;transition:background 0.2s;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary:hover{background:#aa0000;}
+.btn-secondary{background:#000;color:#fff;border:none;padding:11px 24px;border-radius:7px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.2s;}
+.btn-secondary:hover{background:#333;}
+.btn-outline{background:#fff;color:#CC0000;border:2px solid #CC0000;padding:11px 24px;border-radius:7px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.btn-outline:hover{background:#fff5f5;}
+.btn-row{display:flex;justify-content:space-between;align-items:center;margin-top:24px;flex-wrap:wrap;gap:12px;}
+/* CONSENT */
+.consent-box{background:#f9f9f9;border:1.5px solid #ddd;border-radius:8px;padding:16px;font-size:0.78rem;color:#555;line-height:1.6;max-height:200px;overflow-y:auto;margin-bottom:14px;}
+.consent-check{display:flex;align-items:flex-start;gap:10px;font-size:0.84rem;color:#333;}
+.consent-check input[type=checkbox]{width:18px;height:18px;margin-top:2px;accent-color:#CC0000;flex-shrink:0;}
+/* RESULTS */
+.result-hero{text-align:center;padding:24px 0 16px;}
+.result-hero .badge{display:inline-block;padding:6px 18px;border-radius:20px;font-size:0.8rem;font-weight:700;margin-bottom:12px;}
+.badge-qualify{background:#e6f4ea;color:#2d7a3a;}
+.badge-possible{background:#fff3e0;color:#b56b00;}
+.badge-improve{background:#fce8e6;color:#c0392b;}
+.result-range{font-size:2.4rem;font-weight:900;color:#CC0000;margin:8px 0;}
+.result-sub{font-size:0.88rem;color:#666;margin-bottom:20px;}
+.suggestions{margin-top:20px;}
+.suggestion-card{border:1.5px solid #eee;border-radius:8px;padding:14px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;}
+.sug-icon{font-size:1.4rem;flex-shrink:0;}
+.sug-text h4{font-size:0.88rem;font-weight:700;color:#000;margin-bottom:3px;}
+.sug-text p{font-size:0.8rem;color:#555;line-height:1.4;}
+.sug-good{border-color:#CC0000;background:#fff9f9;}
+/* SCHEDULE BUTTON */
+.schedule-wrap{background:#000;border-radius:10px;padding:24px;text-align:center;margin-top:24px;}
+.schedule-wrap h3{color:#fff;font-size:1.1rem;margin-bottom:8px;}
+.schedule-wrap p{color:#ccc;font-size:0.84rem;margin-bottom:16px;}
+.btn-schedule{background:#CC0000;color:#fff;border:none;padding:13px 28px;border-radius:7px;font-size:0.95rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;}
+.btn-schedule:hover{background:#aa0000;}
+/* DISCLAIMER */
+.disclaimer{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:14px 16px;font-size:0.76rem;color:#555;line-height:1.5;margin-top:20px;}
+.disclaimer strong{color:#333;}
+/* FOOTER */
+.footer{background:#000;color:#ccc;text-align:center;padding:24px 16px;font-size:0.78rem;margin-top:40px;line-height:1.7;}
+.footer a{color:#CC0000;text-decoration:none;}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.65);z-index:1000;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:12px;padding:28px;max-width:480px;width:90%;max-height:90vh;overflow-y:auto;}
+.modal h3{font-size:1.15rem;font-weight:700;margin-bottom:16px;color:#000;}
+.modal-close{float:right;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#666;margin-top:-4px;}
+/* HIDDEN */
+.step{display:none;}
+.step.active{display:block;}
+/* ALERTS */
+.alert{padding:12px 16px;border-radius:7px;font-size:0.85rem;margin-bottom:14px;display:none;}
+.alert.show{display:block;}
+.alert-error{background:#fce8e6;color:#c0392b;border:1px solid #e74c3c;}
+.alert-success{background:#e6f4ea;color:#2d7a3a;border:1px solid #27ae60;}
+</style>
+</head><body>
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo">
+    <div class="kw-logo">KW</div>
+    <div class="header-title">
+      <h1>Steven Benefield</h1>
+      <p>Keller Williams Realty Clarksville</p>
+    </div>
+  </div>
+  <div class="header-contact">
+    <div>📍 2271 Wilma Rudolph Blvd, Clarksville TN 37040</div>
+    <div>📞 <a href="tel:9315910005">(931) 591-0005</a> | ✉️ <a href="mailto:s.benefield@kw.com">s.benefield@kw.com</a></div>
+  </div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar" id="progressBar">
+  <div class="step-item">
+    <div class="step-num active" id="sn1">1</div>
+    <div class="step-label active" id="sl1">Loan Type</div>
+  </div>
+  <div class="step-sep">›</div>
+  <div class="step-item">
+    <div class="step-num" id="sn2">2</div>
+    <div class="step-label" id="sl2">Your Info</div>
+  </div>
+  <div class="step-sep">›</div>
+  <div class="step-item">
+    <div class="step-num" id="sn3">3</div>
+    <div class="step-label" id="sl3">Finances</div>
+  </div>
+  <div class="step-sep">›</div>
+  <div class="step-item">
+    <div class="step-num" id="sn4">4</div>
+    <div class="step-label" id="sl4">Property</div>
+  </div>
+  <div class="step-sep">›</div>
+  <div class="step-item">
+    <div class="step-num" id="sn5">5</div>
+    <div class="step-label" id="sl5">Consent</div>
+  </div>
+  <div class="step-sep">›</div>
+  <div class="step-item">
+    <div class="step-num" id="sn6">6</div>
+    <div class="step-label" id="sl6">Results</div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- STEP 1: LOAN TYPE -->
+<div class="step active" id="step1">
+  <div class="card">
+    <h2>What type of loan are you looking for?</h2>
+    <p class="subtitle">Select a loan type below to learn more about it and see if you may qualify.</p>
+    <div class="loan-grid" id="loanGrid">
+      <div class="loan-btn" data-loan="fha" onclick="selectLoan(this)">
+        <div class="loan-icon">🏠</div>
+        <div class="loan-name">FHA Loan</div>
+        <div class="loan-short">First-time buyers</div>
+      </div>
+      <div class="loan-btn" data-loan="conventional" onclick="selectLoan(this)">
+        <div class="loan-icon">🏡</div>
+        <div class="loan-name">Conventional</div>
+        <div class="loan-short">Standard home loan</div>
+      </div>
+      <div class="loan-btn" data-loan="va" onclick="selectLoan(this)">
+        <div class="loan-icon">🎖️</div>
+        <div class="loan-name">VA Loan</div>
+        <div class="loan-short">Military & Veterans</div>
+      </div>
+      <div class="loan-btn" data-loan="usda" onclick="selectLoan(this)">
+        <div class="loan-icon">🌾</div>
+        <div class="loan-name">USDA Loan</div>
+        <div class="loan-short">Rural properties</div>
+      </div>
+      <div class="loan-btn" data-loan="investment" onclick="selectLoan(this)">
+        <div class="loan-icon">📈</div>
+        <div class="loan-name">Investment</div>
+        <div class="loan-short">Rental / income property</div>
+      </div>
+      <div class="loan-btn" data-loan="commercial" onclick="selectLoan(this)">
+        <div class="loan-icon">🏢</div>
+        <div class="loan-name">Commercial</div>
+        <div class="loan-short">Business property</div>
+      </div>
+      <div class="loan-btn" data-loan="refinance" onclick="selectLoan(this)">
+        <div class="loan-icon">🔄</div>
+        <div class="loan-name">Refinance</div>
+        <div class="loan-short">Replace existing loan</div>
+      </div>
+      <div class="loan-btn" data-loan="jumbo" onclick="selectLoan(this)">
+        <div class="loan-icon">💎</div>
+        <div class="loan-name">Jumbo Loan</div>
+        <div class="loan-short">High-value properties</div>
+      </div>
+      <div class="loan-btn" data-loan="construction" onclick="selectLoan(this)">
+        <div class="loan-icon">🔨</div>
+        <div class="loan-name">Construction</div>
+        <div class="loan-short">Build new home</div>
+      </div>
+      <div class="loan-btn" data-loan="renovation" onclick="selectLoan(this)">
+        <div class="loan-icon">🛠️</div>
+        <div class="loan-name">Renovation 203k</div>
+        <div class="loan-short">Buy & renovate</div>
+      </div>
+    </div>
+    <div class="loan-info-box" id="loanInfoBox"></div>
+    <div class="btn-row">
+      <div></div>
+      <button class="btn-primary" onclick="goStep(2)">Next: Personal Info ›</button>
+    </div>
+  </div>
+</div>
+<!-- STEP 2: PERSONAL INFO -->
+<div class="step" id="step2">
+  <div class="card">
+    <h2>Tell us about yourself</h2>
+    <p class="subtitle">This information is required to see your qualification estimate and will be sent to Steven for follow-up.</p>
+    <div id="alertStep2" class="alert alert-error"></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Full Name <span class="required">*</span></label>
+        <input type="text" id="fname" placeholder="John Smith" />
+      </div>
+      <div class="form-group">
+        <label>Email Address <span class="required">*</span></label>
+        <input type="email" id="femail" placeholder="john@email.com" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Phone Number <span class="required">*</span></label>
+        <input type="tel" id="fphone" placeholder="(931) 555-0000" />
+      </div>
+      <div class="form-group">
+        <label>Best Time to Contact</label>
+        <select id="fcontact">
+          <option value="">Select...</option>
+          <option>Morning (8am - 12pm)</option>
+          <option>Afternoon (12pm - 5pm)</option>
+          <option>Evening (5pm - 8pm)</option>
+          <option>Anytime</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Employment Status <span class="required">*</span></label>
+      <div class="radio-group" id="empGroup">
+        <label class="radio-opt" onclick="selectRadio(this,'emp')"><input type="radio" name="emp" value="w2">W-2 Employee</label>
+        <label class="radio-opt" onclick="selectRadio(this,'emp')"><input type="radio" name="emp" value="self">Self-Employed</label>
+        <label class="radio-opt" onclick="selectRadio(this,'emp')"><input type="radio" name="emp" value="retired">Retired</label>
+        <label class="radio-opt" onclick="selectRadio(this,'emp')"><input type="radio" name="emp" value="military">Active Military</label>
+        <label class="radio-opt" onclick="selectRadio(this,'emp')"><input type="radio" name="emp" value="veteran">Veteran</label>
+        <label class="radio-opt" onclick="selectRadio(this,'emp')"><input type="radio" name="emp" value="other">Other</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>How many years at current job/income source?</label>
+      <select id="fyears">
+        <option value="">Select...</option>
+        <option value="0">Less than 1 year</option>
+        <option value="1">1 - 2 years</option>
+        <option value="2">2 - 5 years</option>
+        <option value="5">5+ years</option>
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goStep(1)">‹ Back</button>
+      <button class="btn-primary" onclick="goStep(3)">Next: Finances ›</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: FINANCES -->
+<div class="step" id="step3">
+  <div class="card">
+    <h2>Financial Overview</h2>
+    <p class="subtitle">All information is estimated and used only to calculate your potential qualification range.</p>
+    <div id="alertStep3" class="alert alert-error"></div>
+    <div class="form-group">
+      <label>Annual Gross Income (before taxes) <span class="required">*</span></label>
+      <div class="range-wrap">
+        <input type="range" id="fincome" min="20000" max="500000" step="5000" value="60000" oninput="updateRange('fincome','incomeVal','$',0,true)">
+      </div>
+      <div class="range-val" id="incomeVal">$60,000</div>
+      <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#999;margin-top:2px;"><span>$20,000</span><span>$500,000+</span></div>
+    </div>
+    <div class="form-group">
+      <label>Monthly Debt Payments <span class="required">*</span> <span style="font-size:0.75rem;color:#888;">(car, student loans, credit cards, etc.)</span></label>
+      <div class="range-wrap">
+        <input type="range" id="fdebt" min="0" max="10000" step="100" value="500" oninput="updateRange('fdebt','debtVal','$',0,true)">
+      </div>
+      <div class="range-val" id="debtVal">$500</div>
+      <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#999;margin-top:2px;"><span>$0</span><span>$10,000+</span></div>
+    </div>
+    <div class="form-group">
+      <label>Estimated Credit Score <span class="required">*</span> <span style="font-size:0.75rem;color:#888;">(your best estimate — we do NOT run credit)</span></label>
+      <div class="radio-group" id="creditGroup">
+        <label class="radio-opt" onclick="selectRadio(this,'credit')"><input type="radio" name="credit" value="760">Excellent (760+)</label>
+        <label class="radio-opt" onclick="selectRadio(this,'credit')"><input type="radio" name="credit" value="720">Very Good (720-759)</label>
+        <label class="radio-opt" onclick="selectRadio(this,'credit')"><input type="radio" name="credit" value="680">Good (680-719)</label>
+        <label class="radio-opt" onclick="selectRadio(this,'credit')"><input type="radio" name="credit" value="640">Fair (640-679)</label>
+        <label class="radio-opt" onclick="selectRadio(this,'credit')"><input type="radio" name="credit" value="600">Below Average (600-639)</label>
+        <label class="radio-opt" onclick="selectRadio(this,'credit')"><input type="radio" name="credit" value="550">Poor (Below 600)</label>
+        <label class="radio-opt" onclick="selectRadio(this,'credit')"><input type="radio" name="credit" value="0">Not Sure</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Available Down Payment <span class="required">*</span></label>
+      <div class="range-wrap">
+        <input type="range" id="fdown" min="0" max="200000" step="1000" value="10000" oninput="updateRange('fdown','downVal','$',0,true)">
+      </div>
+      <div class="range-val" id="downVal">$10,000</div>
+      <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#999;margin-top:2px;"><span>$0</span><span>$200,000+</span></div>
+    </div>
+    <div class="form-group">
+      <label>Do you have any bankruptcies or foreclosures in the last 7 years?</label>
+      <div class="radio-group" id="bkGroup">
+        <label class="radio-opt" onclick="selectRadio(this,'bk')"><input type="radio" name="bk" value="no">No</label>
+        <label class="radio-opt" onclick="selectRadio(this,'bk')"><input type="radio" name="bk" value="yes">Yes</label>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goStep(2)">‹ Back</button>
+      <button class="btn-primary" onclick="goStep(4)">Next: Property ›</button>
+    </div>
+  </div>
+</div>
+<!-- STEP 4: PROPERTY -->
+<div class="step" id="step4">
+  <div class="card">
+    <h2>Property Details</h2>
+    <p class="subtitle">Tell us about the property you are looking to purchase or refinance.</p>
+    <div id="alertStep4" class="alert alert-error"></div>
+    <div class="form-group">
+      <label>What is your estimated purchase price? <span class="required">*</span></label>
+      <div class="range-wrap">
+        <input type="range" id="fprice" min="50000" max="2000000" step="10000" value="300000" oninput="updateRange('fprice','priceVal','$',0,true)">
+      </div>
+      <div class="range-val" id="priceVal">$300,000</div>
+      <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#999;margin-top:2px;"><span>$50,000</span><span>$2,000,000+</span></div>
+    </div>
+    <div class="form-group">
+      <label>Property Type <span class="required">*</span></label>
+      <div class="radio-group" id="propTypeGroup">
+        <label class="radio-opt" onclick="selectRadio(this,'propType')"><input type="radio" name="propType" value="single">Single Family Home</label>
+        <label class="radio-opt" onclick="selectRadio(this,'propType')"><input type="radio" name="propType" value="condo">Condo / Townhouse</label>
+        <label class="radio-opt" onclick="selectRadio(this,'propType')"><input type="radio" name="propType" value="multi">Multi-Family (2-4 units)</label>
+        <label class="radio-opt" onclick="selectRadio(this,'propType')"><input type="radio" name="propType" value="commercial">Commercial Building</label>
+        <label class="radio-opt" onclick="selectRadio(this,'propType')"><input type="radio" name="propType" value="land">Land / Lot</label>
+        <label class="radio-opt" onclick="selectRadio(this,'propType')"><input type="radio" name="propType" value="new">New Construction</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Intended Use <span class="required">*</span></label>
+      <div class="radio-group" id="useGroup">
+        <label class="radio-opt" onclick="selectRadio(this,'use')"><input type="radio" name="use" value="primary">Primary Residence</label>
+        <label class="radio-opt" onclick="selectRadio(this,'use')"><input type="radio" name="use" value="secondary">Second / Vacation Home</label>
+        <label class="radio-opt" onclick="selectRadio(this,'use')"><input type="radio" name="use" value="rental">Rental / Investment</label>
+        <label class="radio-opt" onclick="selectRadio(this,'use')"><input type="radio" name="use" value="business">Business Use</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Is the property in a rural or suburban area?</label>
+      <div class="radio-group" id="ruralGroup">
+        <label class="radio-opt" onclick="selectRadio(this,'rural')"><input type="radio" name="rural" value="urban">Urban / City</label>
+        <label class="radio-opt" onclick="selectRadio(this,'rural')"><input type="radio" name="rural" value="suburban">Suburban</label>
+        <label class="radio-opt" onclick="selectRadio(this,'rural')"><input type="radio" name="rural" value="rural">Rural</label>
+        <label class="radio-opt" onclick="selectRadio(this,'rural')"><input type="radio" name="rural" value="unsure">Not Sure</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Are you a first-time homebuyer?</label>
+      <div class="radio-group" id="ftbGroup">
+        <label class="radio-opt" onclick="selectRadio(this,'ftb')"><input type="radio" name="ftb" value="yes">Yes</label>
+        <label class="radio-opt" onclick="selectRadio(this,'ftb')"><input type="radio" name="ftb" value="no">No</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Do you currently own a home?</label>
+      <div class="radio-group" id="ownGroup">
+        <label class="radio-opt" onclick="selectRadio(this,'own')"><input type="radio" name="own" value="yes">Yes</label>
+        <label class="radio-opt" onclick="selectRadio(this,'own')"><input type="radio" name="own" value="no">No</label>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goStep(3)">‹ Back</button>
+      <button class="btn-primary" onclick="goStep(5)">Next: Review & Consent ›</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 5: CONSENT -->
+<div class="step" id="step5">
+  <div class="card">
+    <h2>Review & Consent</h2>
+    <p class="subtitle">Please review the disclaimer below and provide consent before seeing your qualification estimate.</p>
+    <div class="consent-box">
+      <strong>IMPORTANT DISCLOSURE — PLEASE READ CAREFULLY</strong><br><br>
+      This Home Loan Qualification Tool is provided by Steven Benefield, a licensed real estate agent with Keller Williams Realty Clarksville, for <strong>informational and lead generation purposes only</strong>. The results generated by this tool are <strong>estimates based solely on the information you have provided</strong> and are intended only as a general guide.<br><br>
+      <strong>THIS IS NOT A PRE-APPROVAL, PRE-QUALIFICATION, LOAN COMMITMENT, OR ANY FORM OF CREDIT DECISION.</strong> No credit check has been performed. No underwriting analysis has been conducted. The results of this tool do not constitute a guarantee, commitment, or offer to lend by any lender or mortgage company.<br><br>
+      Actual loan qualification, approval, and terms are determined solely by licensed mortgage lenders and are subject to, among other things: a complete credit application, credit verification, income verification, appraisal, title review, underwriting approval, and compliance with all applicable federal, state, and local laws and regulations.<br><br>
+      Steven Benefield is a <strong>real estate agent</strong>, not a mortgage lender or broker. He does not originate loans and is not responsible for final loan approvals, denials, or terms. For actual mortgage pre-approval, you should contact a licensed mortgage lender or mortgage broker.<br><br>
+      By submitting this form, you consent to being contacted by Steven Benefield and/or a Keller Williams Realty representative via phone, email, or text message at the information you provided. Message and data rates may apply. You may opt out at any time.<br><br>
+      All information submitted through this form is kept confidential and will not be sold or shared with third parties except as necessary to provide real estate services. See our privacy policy for details.<br><br>
+      <strong>Equal Housing Opportunity.</strong> All real estate services are provided without regard to race, color, religion, sex, handicap, familial status, or national origin in accordance with federal fair housing laws.<br><br>
+      This tool is for use by individuals 18 years of age or older. Results are based on 2025 standard lending guidelines for the state of Tennessee, Montgomery County, and are subject to change without notice.
+    </div>
+    <div id="alertStep5" class="alert alert-error"></div>
+    <div class="consent-check" style="margin-bottom:10px;">
+      <input type="checkbox" id="consent1">
+      <label for="consent1">I have read and understand that this is NOT a pre-approval or loan commitment of any kind, and the results are estimates for informational purposes only.</label>
+    </div>
+    <div class="consent-check" style="margin-bottom:18px;">
+      <input type="checkbox" id="consent2">
+      <label for="consent2">I consent to being contacted by Steven Benefield / Keller Williams Realty Clarksville regarding my home loan inquiry.</label>
+    </div>
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goStep(4)">‹ Back</button>
+      <button class="btn-primary" onclick="submitAndShowResults()">See My Qualification Estimate ›</button>
+    </div>
+  </div>
+</div>
+<!-- STEP 6: RESULTS -->
+<div class="step" id="step6">
+  <div class="card">
+    <div class="result-hero">
+      <div id="resultBadge" class="badge"></div>
+      <div id="resultRange" class="result-range"></div>
+      <div id="resultSub" class="result-sub"></div>
+    </div>
+    <div class="disclaimer">
+      <strong>⚠️ Important Disclaimer:</strong> This is an <strong>estimate only</strong> and is NOT a pre-approval, pre-qualification, or any form of loan commitment. Actual qualification is determined by a licensed mortgage lender and involves a full credit check, income verification, and underwriting review. Contact a licensed lender for an official pre-approval.
+    </div>
+    <div class="suggestions" id="suggestionsBox"></div>
+    <div class="schedule-wrap">
+      <h3>Ready to Take the Next Step?</h3>
+      <p>Let Steven Benefield help you navigate your home buying journey with a free, no-obligation consultation.</p>
+      <button class="btn-schedule" onclick="openSchedule()">📅 Schedule a Free Consultation</button>
+    </div>
+    <div style="margin-top:20px;text-align:center;">
+      <button class="btn-outline" onclick="startOver()">Start Over</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- SCHEDULE MODAL -->
+<div class="modal-overlay" id="scheduleModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeSchedule()">✕</button>
+    <h3>📅 Schedule a Free Consultation</h3>
+    <p style="font-size:0.85rem;color:#555;margin-bottom:18px;">Choose your preferred date and time and Steven will confirm your appointment.</p>
+    <div id="alertSchedule" class="alert alert-error"></div>
+    <div id="alertScheduleSuccess" class="alert alert-success"></div>
+    <div class="form-group">
+      <label>Preferred Date <span class="required">*</span></label>
+      <input type="date" id="schedDate" min="">
+    </div>
+    <div class="form-group">
+      <label>Preferred Time <span class="required">*</span></label>
+      <select id="schedTime">
+        <option value="">Select a time...</option>
+        <option>9:00 AM</option>
+        <option>9:30 AM</option>
+        <option>10:00 AM</option>
+        <option>10:30 AM</option>
+        <option>11:00 AM</option>
+        <option>11:30 AM</option>
+        <option>12:00 PM</option>
+        <option>1:00 PM</option>
+        <option>1:30 PM</option>
+        <option>2:00 PM</option>
+        <option>2:30 PM</option>
+        <option>3:00 PM</option>
+        <option>3:30 PM</option>
+        <option>4:00 PM</option>
+        <option>4:30 PM</option>
+        <option>5:00 PM</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Preferred Method</label>
+      <div class="radio-group" id="methodGroup">
+        <label class="radio-opt" onclick="selectRadio(this,'method')"><input type="radio" name="method" value="phone">📞 Phone Call</label>
+        <label class="radio-opt" onclick="selectRadio(this,'method')"><input type="radio" name="method" value="inperson">🏠 In Person</label>
+        <label class="radio-opt" onclick="selectRadio(this,'method')"><input type="radio" name="method" value="video">💻 Video Call</label>
+      </div>
+    </div>
+    <div style="margin-top:20px;">
+      <button class="btn-primary" style="width:100%;justify-content:center;" onclick="submitSchedule()">Confirm Appointment Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div style="font-weight:700;font-size:1rem;color:#fff;margin-bottom:6px;">Steven Benefield | Keller Williams Realty Clarksville</div>
+  <div>2271 Wilma Rudolph Blvd, Clarksville, TN 37040</div>
+  <div>📞 <a href="tel:9315910005">(931) 591-0005</a> | ✉️ <a href="mailto:s.benefield@kw.com">s.benefield@kw.com</a></div>
+  <div style="margin-top:12px;font-size:0.72rem;color:#777;">
+    This tool is for informational purposes only and does not constitute a pre-approval, pre-qualification, or loan commitment.<br>
+    All estimates are based on self-reported data and standard 2025 Tennessee lending guidelines. Equal Housing Opportunity. 🏠<br>
+    © 2025 Steven Benefield | Keller Williams Realty. All rights reserved.<br>
+    Keller Williams Realty, Inc. is a real estate franchise company. Each Keller Williams office is independently owned and operated.
+  </div>
+</div>
+<script>
+// =========================================================
+// EMAILJS INIT - Update with your EmailJS credentials
+// =========================================================
+(function(){
+  emailjs.init("YOUR_EMAILJS_PUBLIC_KEY");
+})();
+
+// =========================================================
+// LOAN DESCRIPTIONS
+// =========================================================
+var loanInfo = {
+  fha: {
+    title: "FHA Loan — Federal Housing Administration",
+    desc: "FHA loans are government-backed mortgages ideal for first-time buyers or those with lower credit scores. They require as little as 3.5% down payment with a 580+ credit score, or 10% down with a 500-579 credit score. FHA loans include mortgage insurance premiums (MIP).",
+    reqs: "Min Credit Score: 580 (3.5% down) or 500 (10% down) | Min Down Payment: 3.5% | DTI Limit: 43% | Loan Limit (Montgomery Co. TN): $524,225"
+  },
+  conventional: {
+    title: "Conventional Loan",
+    desc: "Conventional loans are not government-backed and typically offer better rates for borrowers with strong credit. They require 3-20% down. Private Mortgage Insurance (PMI) is required if down payment is less than 20%.",
+    reqs: "Min Credit Score: 620 | Min Down Payment: 3% | DTI Limit: 43-45% | Conforming Loan Limit (TN 2025): $806,500"
+  },
+  va: {
+    title: "VA Loan — Veterans Affairs",
+    desc: "VA loans are available to eligible active military, veterans, and surviving spouses. They offer 0% down payment, no PMI, and competitive interest rates. One of the best loan programs available.",
+    reqs: "Min Credit Score: 620 (lender standard) | Down Payment: 0% | DTI Limit: 41% | No loan limit for eligible veterans | Must have VA eligibility (COE)"
+  },
+  usda: {
+    title: "USDA Loan — Rural Development",
+    desc: "USDA loans are government-backed and designed for rural and some suburban properties. They offer 0% down payment for eligible buyers in qualifying areas. Income limits apply based on household size and location.",
+    reqs: "Min Credit Score: 640 | Down Payment: 0% | DTI Limit: 41% | Must be in USDA-eligible rural area | Income limits apply by county"
+  },
+  investment: {
+    title: "Investment Property Loan",
+    desc: "Investment loans are for purchasing rental or income-generating properties. Lenders require higher credit scores and down payments due to the higher risk. Rental income may be used to offset monthly payments.",
+    reqs: "Min Credit Score: 680-700 | Min Down Payment: 15-25% | DTI Limit: 43% | Higher interest rates than primary residence loans"
+  },
+  commercial: {
+    title: "Commercial Real Estate Loan",
+    desc: "Commercial loans are used to purchase business properties such as office buildings, retail spaces, or warehouses. Terms differ significantly from residential mortgages, with shorter amortization periods and larger down payments.",
+    reqs: "Min Credit Score: 680 | Down Payment: 20-35% | Loan Terms: 5-25 years | Business financials required | Debt Service Coverage Ratio (DSCR) typically 1.25+"
+  },
+  refinance: {
+    title: "Refinance Loan",
+    desc: "Refinancing replaces your existing mortgage with a new one, often to lower your interest rate, reduce monthly payments, shorten your loan term, or cash out home equity. Types include rate-and-term refi, cash-out refi, and streamline refi.",
+    reqs: "Min Credit Score: 620+ | Min Equity: 3-20% depending on type | DTI Limit: 43-45% | Must have existing mortgage | Cash-out requires 20%+ equity"
+  },
+  jumbo: {
+    title: "Jumbo Loan",
+    desc: "Jumbo loans are for properties that exceed the conforming loan limits set by Fannie Mae and Freddie Mac. In most of Tennessee, this means loans above $806,500. They require excellent credit and larger down payments.",
+    reqs: "Min Credit Score: 700-720 | Min Down Payment: 10-20% | DTI Limit: 40-43% | Loan Amount: $806,500+ | Reserves of 6-12 months PITI required"
+  },
+  construction: {
+    title: "Construction Loan",
+    desc: "Construction loans provide short-term financing to build a new home. Funds are released in stages as construction progresses. After completion, the loan typically converts to a standard mortgage (construction-to-permanent).",
+    reqs: "Min Credit Score: 680 | Down Payment: 20-25% | DTI Limit: 43% | Detailed construction plans and contractor required | Interest-only payments during build"
+  },
+  renovation: {
+    title: "FHA 203(k) Renovation Loan",
+    desc: "The FHA 203(k) loan lets buyers finance both the purchase price and renovation costs into a single mortgage. It is ideal for fixer-uppers. There are two types: Standard (major renovations) and Limited (smaller projects up to $35,000).",
+    reqs: "Min Credit Score: 580 | Down Payment: 3.5% | DTI Limit: 43% | Must be primary residence | Licensed contractor required | FHA loan limits apply"
+  }
+};
+
+var selectedLoan = "";
+var formData = {};
+var currentStep = 1;
+
+function selectLoan(el) {
+  document.querySelectorAll('.loan-btn').forEach(function(b){b.classList.remove('selected');});
+  el.classList.add('selected');
+  selectedLoan = el.getAttribute('data-loan');
+  var info = loanInfo[selectedLoan];
+  var box = document.getElementById('loanInfoBox');
+  box.innerHTML = '<h4>' + info.title + '</h4><p>' + info.desc + '</p><div class="reqs"><strong>Key Requirements:</strong> ' + info.reqs + '</div>';
+  box.classList.add('visible');
+}
+
+function selectRadio(el, name) {
+  document.querySelectorAll('[name="'+name+'"]').forEach(function(r){r.parentElement.classList.remove('selected');});
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+}
+
+function updateRange(inputId, valId, prefix, decimals, comma) {
+  var val = parseFloat(document.getElementById(inputId).value);
+  var formatted = comma ? val.toLocaleString('en-US') : val.toFixed(decimals);
+  document.getElementById(valId).textContent = prefix + formatted;
+}
+
+function getRadioVal(name) {
+  var el = document.querySelector('[name="'+name+'"]:checked');
+  return el ? el.value : "";
+}
+
+function showAlert(id, msg) {
+  var el = document.getElementById(id);
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(function(){el.classList.remove('show');}, 5000);
+}
+
+function goStep(n) {
+  // Validation
+  if(n === 2 && currentStep === 1) {
+    if(!selectedLoan) { showAlert('alertStep2','Please select a loan type first.'); goStepNav(1); return; }
+  }
+  if(n === 3 && currentStep === 2) {
+    if(!document.getElementById('fname').value.trim()) { showAlert('alertStep2','Please enter your full name.'); return; }
+    if(!document.getElementById('femail').value.trim()) { showAlert('alertStep2','Please enter your email address.'); return; }
+    if(!document.getElementById('fphone').value.trim()) { showAlert('alertStep2','Please enter your phone number.'); return; }
+    if(!getRadioVal('emp')) { showAlert('alertStep2','Please select your employment status.'); return; }
+  }
+  if(n === 4 && currentStep === 3) {
+    if(!getRadioVal('credit')) { showAlert('alertStep3','Please select your estimated credit score range.'); return; }
+  }
+  if(n === 5 && currentStep === 4) {
+    if(!getRadioVal('propType')) { showAlert('alertStep4','Please select a property type.'); return; }
+    if(!getRadioVal('use')) { showAlert('alertStep4','Please select the intended use.'); return; }
+  }
+  goStepNav(n);
+}
+
+function goStepNav(n) {
+  document.querySelectorAll('.step').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('step'+n).classList.add('active');
+  for(var i=1;i<=6;i++){
+    var sn = document.getElementById('sn'+i);
+    var sl = document.getElementById('sl'+i);
+    if(i < n){sn.classList.add('done');sn.classList.remove('active');sl.classList.remove('active');}
+    else if(i === n){sn.classList.add('active');sn.classList.remove('done');sl.classList.add('active');}
+    else{sn.classList.remove('done','active');sl.classList.remove('active');}
+  }
+  currentStep = n;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function submitAndShowResults() {
+  if(!document.getElementById('consent1').checked || !document.getElementById('consent2').checked) {
+    showAlert('alertStep5','You must agree to both consent items before proceeding.');
+    return;
+  }
+  collectData();
+  calculateResults();
+  sendLeadEmail();
+  goStepNav(6);
+}
+
+function collectData() {
+  formData = {
+    name: document.getElementById('fname').value.trim(),
+    email: document.getElementById('femail').value.trim(),
+    phone: document.getElementById('fphone').value.trim(),
+    contactTime: document.getElementById('fcontact').value,
+    employment: getRadioVal('emp'),
+    yearsEmployed: document.getElementById('fyears').value,
+    income: parseInt(document.getElementById('fincome').value),
+    debt: parseInt(document.getElementById('fdebt').value),
+    credit: parseInt(getRadioVal('credit') || 0),
+    downPayment: parseInt(document.getElementById('fdown').value),
+    bankruptcy: getRadioVal('bk'),
+    purchasePrice: parseInt(document.getElementById('fprice').value),
+    propType: getRadioVal('propType'),
+    intendedUse: getRadioVal('use'),
+    rural: getRadioVal('rural'),
+    firstTimeBuyer: getRadioVal('ftb'),
+    ownsHome: getRadioVal('own'),
+    loanType: selectedLoan
+  };
+}
+function calculateResults() {
+  var d = formData;
+  var monthlyIncome = d.income / 12;
+  var maxHousingDTI = 0.28;
+  var maxTotalDTI = 0.43;
+  var maxMonthlyHousing = monthlyIncome * maxHousingDTI;
+  var maxMonthlyTotal = (monthlyIncome * maxTotalDTI) - d.debt;
+  var maxPayment = Math.min(maxMonthlyHousing, maxMonthlyTotal);
+  if(maxPayment < 0) maxPayment = 0;
+
+  // Estimate loan amount from payment (30yr at ~7%)
+  var rate = 0.07 / 12;
+  var n = 360;
+  var maxLoan = maxPayment * ((1 - Math.pow(1+rate, -n)) / rate);
+
+  // Credit adjustments
+  var creditMult = 1.0;
+  if(d.credit >= 760) creditMult = 1.05;
+  else if(d.credit >= 720) creditMult = 1.02;
+  else if(d.credit >= 680) creditMult = 1.0;
+  else if(d.credit >= 640) creditMult = 0.95;
+  else if(d.credit >= 600) creditMult = 0.88;
+  else if(d.credit < 600 && d.credit > 0) creditMult = 0.80;
+  else creditMult = 0.90;
+
+  maxLoan = maxLoan * creditMult;
+
+  // Add down payment
+  var totalBuying = maxLoan + d.downPayment;
+
+  // Bankruptcy penalty
+  if(d.bankruptcy === 'yes') totalBuying = totalBuying * 0.75;
+
+  // Loan-type caps and adjustments
+  var minCredit = 0, minDown = 0, qualify = true, qualifyMsg = "";
+  if(d.loanType === 'fha') { minCredit = 580; minDown = 0.035; }
+  else if(d.loanType === 'conventional') { minCredit = 620; minDown = 0.03; }
+  else if(d.loanType === 'va') { minCredit = 620; minDown = 0; }
+  else if(d.loanType === 'usda') { minCredit = 640; minDown = 0; }
+  else if(d.loanType === 'investment') { minCredit = 680; minDown = 0.15; totalBuying *= 0.9; }
+  else if(d.loanType === 'commercial') { minCredit = 680; minDown = 0.20; totalBuying *= 0.85; }
+  else if(d.loanType === 'refinance') { minCredit = 620; minDown = 0; }
+  else if(d.loanType === 'jumbo') { minCredit = 700; minDown = 0.10; }
+  else if(d.loanType === 'construction') { minCredit = 680; minDown = 0.20; }
+  else if(d.loanType === 'renovation') { minCredit = 580; minDown = 0.035; }
+
+  var minDownAmt = d.purchasePrice * minDown;
+  var creditOk = (d.credit === 0) ? true : d.credit >= minCredit;
+  var downOk = d.downPayment >= minDownAmt || minDown === 0;
+
+  var status = "qualify";
+  if(!creditOk || !downOk || maxPayment < 500 || d.debt > monthlyIncome * 0.5) {
+    status = "improve";
+  } else if(d.credit < minCredit + 40 || maxPayment < 800) {
+    status = "possible";
+  }
+
+  // Round to nearest $25k
+  var low = Math.max(50000, Math.round((totalBuying * 0.90) / 25000) * 25000);
+  var high = Math.round((totalBuying * 1.05) / 25000) * 25000;
+  if(low < 100000) { low = 100000; high = 175000; }
+  
+  var loanNames = {fha:'FHA',conventional:'Conventional',va:'VA',usda:'USDA',investment:'Investment',commercial:'Commercial',refinance:'Refinance',jumbo:'Jumbo',construction:'Construction',renovation:'FHA 203k'};
+  var loanName = loanNames[d.loanType] || d.loanType;
+
+  var badge = document.getElementById('resultBadge');
+  var range = document.getElementById('resultRange');
+  var sub = document.getElementById('resultSub');
+
+  if(status === 'qualify') {
+    badge.className = 'badge badge-qualify';
+    badge.textContent = '✅ Likely Qualifies';
+    range.textContent = '$' + low.toLocaleString() + ' – $' + high.toLocaleString();
+    sub.textContent = 'Based on your inputs, your estimated ' + loanName + ' loan range is shown above. This is an estimate only — not a pre-approval.';
+  } else if(status === 'possible') {
+    badge.className = 'badge badge-possible';
+    badge.textContent = '⚠️ Possible — May Need Work';
+    range.textContent = '$' + low.toLocaleString() + ' – $' + high.toLocaleString();
+    sub.textContent = 'You may qualify, but some factors could affect your eligibility. An estimated range is shown. Contact Steven for a detailed review.';
+  } else {
+    badge.className = 'badge badge-improve';
+    badge.textContent = '📋 Financial Planning Recommended';
+    range.textContent = '$150,000 – $250,000';
+    sub.textContent = 'Based on your current information, you may not meet the standard requirements for a ' + loanName + ' loan at this time. However, with the right financial plan, homeownership may still be within reach!';
+  }
+
+  buildSuggestions(status, d, creditOk, downOk, monthlyIncome, minCredit, minDownAmt);
+}
+
+function buildSuggestions(status, d, creditOk, downOk, monthlyIncome, minCredit, minDownAmt) {
+  var html = '<h3 style="margin-bottom:14px;font-size:1rem;font-weight:700;">💡 Personalized Suggestions</h3>';
+  
+  var sugs = [];
+
+  if(d.loanType !== 'va' && (d.employment === 'military' || d.employment === 'veteran')) {
+    sugs.push({icon:'🎖️', title:'Consider a VA Loan', text:"As an active military member or veteran, you may qualify for a VA loan with 0% down payment and no PMI. This could significantly increase your buying power!"});
+  }
+  if(d.loanType !== 'fha' && d.credit < 680 && d.credit > 0) {
+    sugs.push({icon:'🏠', title:'FHA Loan May Be a Better Fit', text:'With your credit score range, an FHA loan (min 580 credit) may be easier to qualify for than a conventional loan and requires only 3.5% down.'});
+  }
+  if(d.loanType !== 'usda' && d.rural === 'rural' && d.intendedUse === 'primary') {
+    sugs.push({icon:'🌾', title:'USDA Loan — 0% Down Available', text:'Since your property is in a rural area, you may qualify for a USDA loan with no down payment required. Income limits apply.'});
+  }
+  if(d.credit < minCredit && d.credit > 0) {
+    sugs.push({icon:'📈', title:'Boost Your Credit Score', text:'Your estimated credit score (' + d.credit + ') is below the minimum (' + minCredit + ') for this loan. Paying down credit cards and making on-time payments for 6-12 months can significantly improve your score.'});
+  }
+  if(!downOk) {
+    sugs.push({icon:'💰', title:'Increase Your Down Payment', text:'You may need approximately $' + Math.round(minDownAmt).toLocaleString() + ' for a down payment on this loan type. Consider down payment assistance programs available in Tennessee.'});
+  }
+  if(d.debt > monthlyIncome * 0.35) {
+    sugs.push({icon:'📉', title:'Reduce Monthly Debt', text:'Your monthly debt-to-income ratio appears high. Paying off or reducing recurring debts (car payments, credit cards) before applying could significantly improve your qualification amount.'});
+  }
+  if(d.firstTimeBuyer === 'yes') {
+    sugs.push({icon:'🎁', title:'First-Time Buyer Programs', text:"Tennessee offers several first-time homebuyer programs including THDA's Great Choice Home Loan with down payment assistance. Ask Steven about programs you may qualify for!"});
+  }
+  if(d.bankruptcy === 'yes') {
+    sugs.push({icon:'⏳', title:'Post-Bankruptcy Waiting Periods', text:'FHA loans require 2 years after bankruptcy discharge. Conventional loans require 4 years. VA loans require 2 years. With a solid financial plan, homeownership is still achievable!'});
+  }
+  if(status === 'improve') {
+    sugs.push({icon:'📋', title:'Free Financial Planning Consultation', text:'Would you like Steven to connect you with a HUD-approved housing counselor or mortgage specialist who can create a personalized plan to get you mortgage-ready?'});
+  }
+  
+  if(sugs.length === 0) {
+    sugs.push({icon:'⭐', title:'Great Financial Position!', text:"Your profile looks strong! The next step is to connect with a licensed mortgage lender for an official pre-approval. Steven can recommend trusted local lenders in the Clarksville area."});
+  }
+
+  sugs.forEach(function(s){
+    html += '<div class="suggestion-card sug-good"><div class="sug-icon">'+s.icon+'</div><div class="sug-text"><h4>'+s.title+'</h4><p>'+s.text+'</p></div></div>';
+  });
+
+  if(status === 'improve') {
+    html += '<div style="text-align:center;margin-top:16px;padding:16px;background:#f9f9f9;border-radius:8px;">';
+    html += '<p style="font-size:0.88rem;color:#444;margin-bottom:12px;">Would you like Steven to help you create a financial plan to reach your homeownership goals?</p>';
+    html += '<button class="btn-primary" onclick="openSchedule()">Yes, Contact Steven for a Financial Plan</button>';
+    html += '</div>';
+  }
+
+  document.getElementById('suggestionsBox').innerHTML = html;
+}
+
+function sendLeadEmail() {
+  var d = formData;
+  var loanNames = {fha:'FHA Loan',conventional:'Conventional Loan',va:'VA Loan',usda:'USDA Loan',investment:'Investment Property',commercial:'Commercial',refinance:'Refinance',jumbo:'Jumbo Loan',construction:'Construction Loan',renovation:'FHA 203k Renovation'};
+  
+  var templateParams = {
+    to_email: 's.benefield@kw.com',
+    from_name: d.name,
+    from_email: d.email,
+    phone: d.phone,
+    contact_time: d.contactTime || 'Not specified',
+    loan_type: loanNames[d.loanType] || d.loanType,
+    employment: d.employment,
+    annual_income: '$' + d.income.toLocaleString(),
+    monthly_debt: '$' + d.debt.toLocaleString(),
+    credit_score: d.credit > 0 ? d.credit + '+' : 'Not Sure',
+    down_payment: '$' + d.downPayment.toLocaleString(),
+    purchase_price: '$' + d.purchasePrice.toLocaleString(),
+    prop_type: d.propType,
+    intended_use: d.intendedUse,
+    first_time_buyer: d.firstTimeBuyer,
+    bankruptcy: d.bankruptcy,
+    message: 'New lead from Home Loan Qualifier tool. ' + d.name + ' is interested in a ' + (loanNames[d.loanType]||d.loanType) + '. Please follow up.'
+  };
+
+  emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+    .then(function(){ console.log('Lead email sent!'); })
+    .catch(function(err){ console.error('EmailJS error:', err); });
+}
+
+function openSchedule() {
+  var today = new Date();
+  var minDate = new Date(today.getTime() + 86400000);
+  document.getElementById('schedDate').min = minDate.toISOString().split('T')[0];
+  document.getElementById('scheduleModal').classList.add('open');
+}
+
+function closeSchedule() {
+  document.getElementById('scheduleModal').classList.remove('open');
+}
+
+function submitSchedule() {
+  var date = document.getElementById('schedDate').value;
+  var time = document.getElementById('schedTime').value;
+  var method = getRadioVal('method');
+  
+  if(!date) { showAlert('alertSchedule','Please select a preferred date.'); return; }
+  if(!time) { showAlert('alertSchedule','Please select a preferred time.'); return; }
+  
+  var d = formData;
+  var templateParams = {
+    to_email: 's.benefield@kw.com',
+    from_name: d.name || 'Website Visitor',
+    from_email: d.email || 'Not provided',
+    phone: d.phone || 'Not provided',
+    appt_date: date,
+    appt_time: time,
+    appt_method: method || 'Phone Call',
+    loan_type: d.loanType || 'General inquiry',
+    message: 'Appointment request: ' + (d.name||'Visitor') + ' wants to meet on ' + date + ' at ' + time + ' via ' + (method||'phone') + '.'
+  };
+
+  emailjs.send('YOUR_SERVICE_ID', 'YOUR_APPT_TEMPLATE_ID', templateParams)
+    .then(function(){
+      document.getElementById('alertScheduleSuccess').textContent = '✅ Your appointment request has been sent! Steven will confirm within 24 hours.';
+      document.getElementById('alertScheduleSuccess').classList.add('show');
+      document.getElementById('alertSchedule').classList.remove('show');
+      setTimeout(function(){closeSchedule();}, 3000);
+    })
+    .catch(function(err){
+      document.getElementById('alertSchedule').textContent = 'There was an error. Please call (931) 591-0005 or email s.benefield@kw.com directly.';
+      document.getElementById('alertSchedule').classList.add('show');
+    });
+}
+
+function startOver() {
+  selectedLoan = "";
+  formData = {};
+  document.querySelectorAll('.loan-btn').forEach(function(b){b.classList.remove('selected');});
+  document.getElementById('loanInfoBox').classList.remove('visible');
+  document.querySelectorAll('.radio-opt').forEach(function(r){r.classList.remove('selected');});
+  document.querySelectorAll('input[type=radio]').forEach(function(r){r.checked=false;});
+  document.getElementById('fname').value='';
+  document.getElementById('femail').value='';
+  document.getElementById('fphone').value='';
+  document.getElementById('consent1').checked=false;
+  document.getElementById('consent2').checked=false;
+  document.getElementById('fincome').value=60000; document.getElementById('incomeVal').textContent='$60,000';
+  document.getElementById('fdebt').value=500; document.getElementById('debtVal').textContent='$500';
+  document.getElementById('fdown').value=10000; document.getElementById('downVal').textContent='$10,000';
+  document.getElementById('fprice').value=300000; document.getElementById('priceVal').textContent='$300,000';
+  goStepNav(1);
+}
+
+// Init date min
+document.addEventListener('DOMContentLoaded', function(){
+  var today = new Date();
+  document.getElementById('schedDate').min = new Date(today.getTime()+86400000).toISOString().split('T')[0];
+});
+</script>
+</body>
+</html>
