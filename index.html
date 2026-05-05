@@ -75,6 +75,13 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
 .badge-improve{background:#fce8e6;color:#c0392b;}
 .result-range{font-size:2.3rem;font-weight:900;color:#CC0000;margin:6px 0;}
 .result-sub{font-size:0.86rem;color:#666;margin-bottom:18px;line-height:1.5;}
+.result-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:10px 0 18px;}
+.result-stat-box{background:#f5f5f5;border-radius:8px;padding:12px 18px;text-align:center;min-width:120px;}
+.result-stat-box .stat-label{font-size:0.72rem;color:#666;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px;}
+.result-stat-box .stat-value{font-size:1.15rem;font-weight:800;color:#CC0000;}
+.result-stat-box .stat-note{font-size:0.68rem;color:#999;margin-top:2px;}
+.btn-print{background:#fff;color:#333;border:1.5px solid #ccc;border-radius:6px;padding:9px 20px;font-size:0.83rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.btn-print:hover{background:#f0f0f0;border-color:#999;}
 .suggestions h3{font-size:1rem;font-weight:700;margin-bottom:12px;color:#000;}
 .suggestion-card{border:1.5px solid #eee;border-radius:8px;padding:12px;margin-bottom:9px;display:flex;align-items:flex-start;gap:11px;background:#fff;}
 .suggestion-card.highlight{border-color:#CC0000;background:#fff9f9;}
@@ -104,6 +111,13 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
 .alert-success{background:#e6f9ed;color:#1a7a35;border:1px solid #27ae60;}
 .spinner{display:none;text-align:center;padding:20px;color:#666;font-size:0.9rem;}
 .spinner.show{display:block;}
+@media print{
+  .header,.step-nav,.btn-print,.btn-schedule,.btn-outline,.disclaimer-box{display:none!important;}
+  .step{display:block!important;}
+  .step:not(#step6){display:none!important;}
+  body{background:#fff;}
+  .card{box-shadow:none;border:1px solid #ccc;}
+}
 </style>
 </head><body>
 <div class="header">
@@ -331,6 +345,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
     <div id="resultBadge" class="badge"></div>
     <div id="resultRange" class="result-range"></div>
     <div id="resultSub" class="result-sub"></div>
+    <div class="result-stats">
+      <div class="result-stat-box"><div class="stat-label">Est. Monthly Payment</div><div class="stat-value" id="statMonthly">—</div><div class="stat-note">P+I only</div></div>
+      <div class="result-stat-box"><div class="stat-label">Your Est. DTI</div><div class="stat-value" id="statDTI">—</div><div class="stat-note">Debt-to-Income</div></div>
+      <div class="result-stat-box"><div class="stat-label">Rate Used</div><div class="stat-value" id="statRate">7.00%</div><div class="stat-note">30-yr estimate</div></div>
+    </div>
   </div>
   <div class="disclaimer-box">
     <strong>⚠️ Disclaimer:</strong> This is an <strong>ESTIMATE ONLY</strong> and is NOT a pre-approval, pre-qualification, or loan commitment of any kind. No credit check was performed. Actual qualification is determined solely by a licensed mortgage lender following a full application, credit review, and underwriting process. Consult a licensed lender for official pre-approval. Results based on self-reported data and 2025 TN lending guidelines.
@@ -342,7 +361,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
     <button class="btn-schedule" onclick="openSchedule()">📅 Schedule a Free Consultation</button>
   </div>
   <div style="text-align:center;margin-top:16px;">
-    <button class="btn-outline" onclick="startOver()">Start Over</button>
+    <button class="btn-print" onclick="printResults()">🖶️ Print / Save PDF</button>
+  <button class="btn-outline" onclick="startOver()">Start Over</button>
   </div>
 </div>
 </div>
@@ -358,6 +378,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
   <div id="alertSchedOk" class="alert alert-success"></div>
   <div class="spinner" id="schedSpinner">Sending your request... ⏳</div>
   <div id="schedForm">
+    <div id="schedNameDisp" style="font-size:0.82rem;color:#555;margin-bottom:10px;padding:6px 10px;background:#f5f5f5;border-radius:5px;display:none;"></div>
     <div class="form-group"><label>Preferred Date <span class="req">*</span></label><input type="date" id="schedDate"></div>
     <div class="form-group"><label>Preferred Time <span class="req">*</span></label>
       <select id="schedTime"><option value="">Select a time...</option><option>9:00 AM</option><option>9:30 AM</option><option>10:00 AM</option><option>10:30 AM</option><option>11:00 AM</option><option>11:30 AM</option><option>12:00 PM</option><option>1:00 PM</option><option>1:30 PM</option><option>2:00 PM</option><option>2:30 PM</option><option>3:00 PM</option><option>3:30 PM</option><option>4:00 PM</option><option>4:30 PM</option><option>5:00 PM</option></select>
@@ -390,7 +411,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
 // LOAN DESCRIPTIONS
 // ============================================================
 var loanInfo = {
-  fha:{title:"FHA Loan — Federal Housing Administration",desc:"FHA loans are government-backed mortgages designed for first-time buyers and those with lower credit scores. They require as little as 3.5% down payment (with 580+ credit score) or 10% down (500-579 score). FHA loans include mandatory mortgage insurance premiums (MIP) for the life of the loan.",reqs:"Min Credit: 580 (3.5% down) or 500 (10% down) | Min Down: 3.5% | Max DTI: 43% | TN Loan Limit (Montgomery Co.): $524,225"},
+  fha:{title:"FHA Loan — Federal Housing Administration",desc:"FHA loans are government-backed mortgages designed for first-time buyers and those with lower credit scores. They require as little as 3.5% down payment (with 580+ credit score) or 10% down (500-579 score). FHA loans include mandatory mortgage insurance premiums (MIP) for the life of the loan.",reqs:"Min Credit: 580 (3.5% down) or 500 (10% down) | Min Down: 3.5% | Max DTI: 43% | FHA Loan Limit (Montgomery Co. 2025): $524,225 — FHA limits are lower than conventional ($806,500 conforming)"},
   conventional:{title:"Conventional Loan",desc:"Conventional loans are not government-backed and typically offer lower rates and fewer restrictions for borrowers with strong credit. They require 3–20% down. PMI is required if your down payment is less than 20%, but can be removed once you reach 20% equity.",reqs:"Min Credit: 620 | Min Down: 3% | Max DTI: 43–45% | 2025 Conforming Limit (TN): $806,500"},
   va:{title:"VA Loan — U.S. Department of Veterans Affairs",desc:"VA loans are one of the best mortgage products available — exclusively for eligible active military, veterans, and surviving spouses. They offer 0% down payment, no PMI, competitive rates, and flexible qualification standards. A Certificate of Eligibility (COE) is required.",reqs:"Min Credit: 620 (lender standard) | Down Payment: 0% | Max DTI: 41% | No loan limit for full entitlement | Must have valid VA eligibility (COE)"},
   usda:{title:"USDA Loan — Rural Development",desc:"USDA loans are 100% government-backed mortgages for buyers in eligible rural and suburban areas. They offer 0% down payment, low mortgage insurance, and competitive rates. Income limits apply based on household size and county.",reqs:"Min Credit: 640 | Down Payment: 0% | Max DTI: 41% | Must be USDA-eligible area | Household income limits apply by county"},
@@ -452,6 +473,7 @@ function step1Next(){
 }
 
 function step2Next(){
+  saveProgress();
   if(!document.getElementById('fname').value.trim()){showErr('alertStep2','Please enter your full name.');return;}
   var e=document.getElementById('femail').value.trim();
   if(!e||!e.includes('@')){showErr('alertStep2','Please enter a valid email address.');return;}
@@ -461,11 +483,13 @@ function step2Next(){
 }
 
 function step3Next(){
+  saveProgress();
   if(!getR('credit')){showErr('alertStep3','Please select your estimated credit score range.');return;}
   goStep(4);
 }
 
 function step4Next(){
+  saveProgress();
   if(!getR('propType')){showErr('alertStep4','Please select a property type.');return;}
   if(!getR('use')){showErr('alertStep4','Please select the intended use.');return;}
   goStep(5);
@@ -607,6 +631,10 @@ function calcResults(){
     range.textContent='$150,000 – $250,000';
     sub.textContent='Based on your current information, you may not meet standard requirements for a '+ln+' loan right now. With the right financial plan, homeownership could still be within reach — Steven can help!';
   }
+  var mEl=document.getElementById('statMonthly');
+  var dEl=document.getElementById('statDTI');
+  if(mEl)mEl.textContent=maxPay>0?'$'+Math.round(maxPay).toLocaleString('en-US')+'/mo':'N/A';
+  if(dEl){var dPct=mo>0?Math.round(((d.debt+maxPay)/mo)*100):0;dEl.textContent=dPct>0?dPct+'%':'N/A';dEl.style.color=dPct>43?'#c0392b':dPct>36?'#b56b00':'#1a7a35';}
   buildSuggestions(status,d,crOk,dnOk,mo,minCr,minDnAmt);
 }
 
@@ -633,6 +661,8 @@ function buildSuggestions(status,d,crOk,dnOk,mo,minCr,minDnAmt){
     s.push({i:'💡',t:'A Conventional Loan May Work Better',p:'Your purchase price ($'+d.price.toLocaleString()+') may fall under the conventional loan limit ($806,500). A conventional loan could offer better rates with a lower down payment requirement.'});
   if(status==='improve')
     s.push({i:'📋',t:'Free Financial Planning Session',p:'Would you like Steven to connect you with a HUD-approved housing counselor or local mortgage specialist who can create a step-by-step plan to get you mortgage-ready in 6–24 months?'});
+  if(d.emp==='self')
+    s.push({i:'💼',t:'Self-Employed? Plan for Extra Documentation',p:'As a self-employed borrower, lenders typically require 2 years of tax returns, a profit & loss statement, and bank statements. Your qualifying income is based on net (after deductions) income. Steven can connect you with lenders experienced in self-employed approvals.'});
   if(s.length===0)
     s.push({i:'⭐',t:'Strong Financial Profile!',p:"Your numbers look solid! The next step is to connect with a licensed mortgage lender for an official pre-approval letter. Steven can recommend trusted local lenders in the Clarksville area."});
   var html='<h3>💡 Personalized Suggestions for You</h3>';
@@ -648,6 +678,8 @@ function buildSuggestions(status,d,crOk,dnOk,mo,minCr,minDnAmt){
 function openSchedule(){
   var td=new Date();td.setDate(td.getDate()+1);
   document.getElementById('schedDate').min=td.toISOString().split('T')[0];
+  var nd=document.getElementById('schedNameDisp');
+  if(nd&&fd.name){nd.textContent='👤 '+fd.name+(fd.phone?' • '+fd.phone:'')+(fd.email?' • '+fd.email:'');nd.style.display='block';}
   document.getElementById('scheduleModal').classList.add('open');
 }
 function closeSchedule(){document.getElementById('scheduleModal').classList.remove('open');}
@@ -700,8 +732,46 @@ function startOver(){
   document.getElementById('fdebt').value=500;document.getElementById('debtVal').textContent='$500';
   document.getElementById('fdown').value=10000;document.getElementById('downVal').textContent='$10,000';
   document.getElementById('fprice').value=300000;document.getElementById('priceVal').textContent='$300,000';
+  try{localStorage.removeItem('hlq_p');}catch(e){}
   goStep(1);
 }
+function printResults(){window.print();}
+function saveProgress(){
+  try{
+    var state={
+      loan:selLoan,
+      nm:document.getElementById('fname').value,
+      em:document.getElementById('femail').value,
+      ph:document.getElementById('fphone').value,
+      ct:document.getElementById('fcontact').value,
+      yr:document.getElementById('fyears').value,
+      inc:document.getElementById('fincome').value,
+      dbt:document.getElementById('fdebt').value,
+      dn:document.getElementById('fdown').value,
+      pr:document.getElementById('fprice').value,
+      emp:getR('emp'),cr:getR('credit'),bk:getR('bk'),
+      pt:getR('propType'),us:getR('use'),ru:getR('rural'),
+      fb:getR('ftb'),ow:getR('own'),cs:curStep
+    };
+    localStorage.setItem('hlq_p',JSON.stringify(state));
+  }catch(e){}
+}
+function loadProgress(){
+  try{
+    var sv=localStorage.getItem('hlq_p');
+    if(!sv)return;
+    var s=JSON.parse(sv);
+    if(s.loan){var b=document.querySelector('[data-loan="'+s.loan+'"]');if(b)selectLoan(b);}
+    var flds=[['fname',s.nm],['femail',s.em],['fphone',s.ph],['fcontact',s.ct],['fyears',s.yr]];
+    flds.forEach(function(f){var el=document.getElementById(f[0]);if(el&&f[1])el.value=f[1];});
+    var sliders=[['fincome',s.inc,'incomeVal'],['fdebt',s.dbt,'debtVal'],['fdown',s.dn,'downVal'],['fprice',s.pr,'priceVal']];
+    sliders.forEach(function(f){if(f[1]){var el=document.getElementById(f[0]);if(el){el.value=f[1];var ve=document.getElementById(f[2]);if(ve)ve.textContent='$'+parseInt(f[1]).toLocaleString('en-US');}}});
+    var radios=[['emp',s.emp],['credit',s.cr],['bk',s.bk],['propType',s.pt],['use',s.us],['rural',s.ru],['ftb',s.fb],['own',s.ow]];
+    radios.forEach(function(r){if(r[1]){var el=document.querySelector('[name="'+r[0]+'"]:checked');if(!el){var inp=document.querySelector('[name="'+r[0]+'"][value="'+r[1]+'"]');if(inp){var lbl=inp.closest('.radio-opt');if(lbl)selR(lbl,r[0]);}}}});
+    if(s.cs&&s.cs>1&&s.cs<6)goStep(s.cs);
+  }catch(e){}
+}
+window.addEventListener('DOMContentLoaded',loadProgress);
 </script>
 </body>
 </html>
