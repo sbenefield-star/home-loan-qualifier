@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home Loan Qualifier | Steven Benefield - KW Clarksville</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+<meta property="og:title" content="Home Loan Qualifier | Steven Benefield - KW Clarksville">
+<meta property="og:description" content="Find out which home loan you may qualify for in 2 minutes. Free tool by Steven Benefield, Keller Williams Realty Clarksville TN.">
+<meta property="og:image" content="https://sbenefield-star.github.io/home-loan-qualifier/og-image.jpg">
+<meta property="og:url" content="https://sbenefield-star.github.io/home-loan-qualifier/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Free home loan qualifier tool for Clarksville TN buyers. Check FHA, VA, Conventional, USDA and more with Steven Benefield at Keller Williams.">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
@@ -117,6 +125,51 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
   .step:not(#step6){display:none!important;}
   body{background:#fff;}
   .card{box-shadow:none;border:1px solid #ccc;}
+
+/* ---- Tooltip ---- */
+.tip-wrap{position:relative;display:inline-block;margin-left:5px;cursor:help;}
+.tip-icon{font-size:0.75rem;color:#888;background:#e8e8e8;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;}
+.tip-box{display:none;position:absolute;bottom:125%;left:50%;transform:translateX(-50%);background:#333;color:#fff;font-size:0.75rem;padding:7px 10px;border-radius:6px;width:220px;z-index:99;line-height:1.4;text-align:left;}
+.tip-box::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#333;}
+.tip-wrap:hover .tip-box,.tip-wrap:focus .tip-box{display:block;}
+/* ---- Step transition ---- */
+.step{animation:stepFade 0.3s ease;}
+@keyframes stepFade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+/* ---- Loan fit scorecard ---- */
+.loan-scorecard{margin-top:16px;border:1px solid #eee;border-radius:8px;overflow:hidden;}
+.scorecard-title{background:#111;color:#fff;font-size:0.78rem;font-weight:700;padding:8px 14px;text-transform:uppercase;letter-spacing:0.05em;}
+.scorecard-row{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid #f0f0f0;font-size:0.82rem;}
+.scorecard-row:last-child{border-bottom:none;}
+.score-fit-good{color:#1a7a35;font-weight:700;}
+.score-fit-ok{color:#b56b00;font-weight:700;}
+.score-fit-no{color:#c0392b;font-weight:700;}
+/* ---- Closing cost box ---- */
+.closing-cost-box{background:#f0f7ff;border:1px solid #c5dff8;border-radius:8px;padding:12px 16px;margin:12px 0;font-size:0.83rem;color:#1a3a5c;}
+.closing-cost-box strong{color:#1a3a5c;}
+/* ---- VA Fort Campbell banner ---- */
+.va-banner{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;border-radius:10px;padding:16px 20px;margin-bottom:18px;display:flex;align-items:center;gap:14px;}
+.va-banner-icon{font-size:2rem;flex-shrink:0;}
+.va-banner-text h4{margin:0 0 4px;font-size:0.95rem;font-weight:700;color:#ffd700;}
+.va-banner-text p{margin:0;font-size:0.78rem;color:#ccc;line-height:1.4;}
+.va-banner-btn{background:#ffd700;color:#000;border:none;border-radius:6px;padding:7px 14px;font-size:0.78rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+/* ---- Share button ---- */
+.btn-share{background:#fff;color:#333;border:1.5px solid #ccc;border-radius:6px;padding:9px 20px;font-size:0.83rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.btn-share:hover{background:#f0f0f0;}
+.share-toast{display:none;position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 22px;border-radius:20px;font-size:0.84rem;z-index:999;animation:fadeInUp 0.3s ease;}
+.share-toast.show{display:block;}
+@keyframes fadeInUp{from{opacity:0;transform:translate(-50%,10px);}to{opacity:1;transform:translate(-50%,0);}}
+/* ---- Help Me Choose card ---- */
+.loan-btn.choose-card{border:2px dashed #CC0000;background:#fff9f9;}
+.choose-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;align-items:center;justify-content:center;}
+.choose-modal.open{display:flex;}
+.choose-inner{background:#fff;border-radius:12px;padding:28px 24px;max-width:440px;width:90%;max-height:85vh;overflow-y:auto;}
+.choose-inner h3{margin:0 0 16px;font-size:1.1rem;}
+.choose-q{margin-bottom:18px;}
+.choose-q label{display:block;font-size:0.85rem;font-weight:600;margin-bottom:8px;color:#333;}
+.choose-opt{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1.5px solid #ddd;border-radius:7px;margin-bottom:6px;cursor:pointer;font-size:0.85rem;transition:all 0.15s;}
+.choose-opt:hover{border-color:#CC0000;background:#fff9f9;}
+.choose-opt input{accent-color:#CC0000;}
+
 }
 </style>
 </head><body>
@@ -165,6 +218,19 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
     <div class="loan-btn" data-loan="jumbo" onclick="selectLoan(this)"><div class="loan-icon">💎</div><div class="loan-name">Jumbo Loan</div><div class="loan-short">High-value properties</div></div>
     <div class="loan-btn" data-loan="construction" onclick="selectLoan(this)"><div class="loan-icon">🔨</div><div class="loan-name">Construction</div><div class="loan-short">Build new home</div></div>
     <div class="loan-btn" data-loan="renovation" onclick="selectLoan(this)"><div class="loan-icon">🛠️</div><div class="loan-name">Renovation 203k</div><div class="loan-short">Buy & renovate</div></div>
+  <button class="loan-btn choose-card" onclick="openChooseModal()">
+    <div class="loan-icon">🤔</div>
+    <div class="loan-name">Not Sure?</div>
+    <div class="loan-tag">Help me choose</div>
+  </button>
+  </div>
+  <div class="va-banner" id="vaBanner" style="display:none;">
+    <div class="va-banner-icon">🎖️</div>
+    <div class="va-banner-text">
+      <h4>Fort Campbell Area? VA Loans Are Your #1 Option</h4>
+      <p>Active duty, veterans &amp; surviving spouses near Clarksville may qualify for 0% down, no PMI, and the best rates available — no matter your credit score.</p>
+    </div>
+    <button class="va-banner-btn" onclick="selectLoanByKey('va')">See VA Loan ›</button>
   </div>
   <div class="loan-info-box" id="loanInfoBox"></div>
   <div class="btn-row"><div></div><button class="btn-primary" onclick="step1Next()">Next: Personal Info ›</button></div>
@@ -182,7 +248,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
     <div class="form-group"><label>Email Address <span class="req">*</span></label><input type="email" id="femail" placeholder="john@email.com"></div>
   </div>
   <div class="form-row">
-    <div class="form-group"><label>Phone Number <span class="req">*</span></label><input type="tel" id="fphone" placeholder="(931) 555-0000"></div>
+    <div class="form-group"><label>Phone Number <span class="req">*</span></label><input type="tel" id="fphone" placeholder="(931) 555-0000" oninput="fmtPhone(this)" maxlength="14"></div>
     <div class="form-group"><label>Best Time to Contact</label><select id="fcontact"><option value="">Select...</option><option>Morning (8am-12pm)</option><option>Afternoon (12pm-5pm)</option><option>Evening (5pm-8pm)</option><option>Anytime</option></select></div>
   </div>
   <div class="form-group">
@@ -197,6 +263,39 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
     </div>
   </div>
   <div class="form-group"><label>Years at Current Job / Income Source</label><select id="fyears"><option value="">Select...</option><option value="0">Less than 1 year</option><option value="1">1-2 years</option><option value="2">2-5 years</option><option value="5">5+ years</option></select></div>
+  <div class="form-row">
+    <div class="form-group"><label>When are you looking to buy/refinance? <span class="req">*</span></label>
+      <select id="ftimeline">
+        <option value="">Select...</option>
+        <option value="asap">ASAP (0–3 months)</option>
+        <option value="soon">3–6 months</option>
+        <option value="planning">6–12 months</option>
+        <option value="researching">Just researching</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Are you working with a real estate agent?</label>
+      <select id="fagent">
+        <option value="">Select...</option>
+        <option value="no">No — I need one</option>
+        <option value="yes">Yes — I have one</option>
+        <option value="unsure">Not sure yet</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label>How did you hear about us?</label>
+      <select id="fsource">
+        <option value="">Select...</option>
+        <option value="google">Google Search</option>
+        <option value="social">Social Media</option>
+        <option value="referral">Referral from Friend/Family</option>
+        <option value="kw">Keller Williams Agent</option>
+        <option value="sign">Yard / Open House Sign</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="form-group"></div>
+  </div>
   <div class="btn-row"><button class="btn-secondary" onclick="goStep(1)">‹ Back</button><button class="btn-primary" onclick="step2Next()">Next: Finances ›</button></div>
 </div>
 </div>
@@ -208,13 +307,13 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
   <p class="subtitle">Your answers help calculate a qualification estimate. All figures are self-reported estimates only.</p>
   <div id="alertStep3" class="alert alert-error"></div>
   <div class="form-group">
-    <label>Annual Gross Income (before taxes) <span class="req">*</span></label>
+    <label>Annual Gross Income (before taxes) <span class="req">*</span><span class="tip-wrap" tabindex="0"><span class="tip-icon">?</span><span class="tip-box">Your total income before any taxes are taken out. Include all sources: salary, bonuses, Social Security, etc. For self-employed, use your average net income from last 2 tax returns.</span></span></label>
     <div class="range-wrap"><input type="range" id="fincome" min="20000" max="500000" step="5000" value="60000" oninput="upR('fincome','incomeVal')"></div>
     <div class="range-val" id="incomeVal">$60,000</div>
     <div class="range-limits"><span>$20,000</span><span>$500,000+</span></div>
   </div>
   <div class="form-group">
-    <label>Total Monthly Debt Payments <span class="req">*</span> <span style="font-size:0.73rem;color:#999;">(car, student loans, credit cards min payments, etc.)</span></label>
+    <label>Total Monthly Debt Payments <span class="req">*</span><span class="tip-wrap" tabindex="0"><span class="tip-icon">?</span><span class="tip-box">Include: car loans, student loans, credit card minimum payments, personal loans. Do NOT include: rent, utilities, phone, groceries, or subscriptions.</span></span> <span style="font-size:0.73rem;color:#999;">(car, student loans, credit cards min payments, etc.)</span></label>
     <div class="range-wrap"><input type="range" id="fdebt" min="0" max="10000" step="100" value="500" oninput="upR('fdebt','debtVal')"></div>
     <div class="range-val" id="debtVal">$500</div>
     <div class="range-limits"><span>$0</span><span>$10,000+</span></div>
@@ -228,11 +327,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
       <label class="radio-opt" onclick="selR(this,'credit')"><input type="radio" name="credit" value="640">Fair (640-679)</label>
       <label class="radio-opt" onclick="selR(this,'credit')"><input type="radio" name="credit" value="600">Below Avg (600-639)</label>
       <label class="radio-opt" onclick="selR(this,'credit')"><input type="radio" name="credit" value="550">Poor (Below 600)</label>
-      <label class="radio-opt" onclick="selR(this,'credit')"><input type="radio" name="credit" value="0">Not Sure</label>
+      <label class="radio-opt" onclick="selR(this,'credit')"><input type="radio" name="credit" value="0">Not Sure <small style="font-weight:400;color:#888;">(no late payments? guess Good)</small></label>
     </div>
   </div>
   <div class="form-group">
-    <label>Available Down Payment <span class="req">*</span></label>
+    <label>Available Down Payment <span class="req">*</span><span class="tip-wrap" tabindex="0"><span class="tip-icon">?</span><span class="tip-box">The amount of cash you can put toward the purchase upfront. Down payment assistance programs may be available if this is low — Steven can help!</span></span></label>
     <div class="range-wrap"><input type="range" id="fdown" min="0" max="200000" step="1000" value="10000" oninput="upR('fdown','downVal')"></div>
     <div class="range-val" id="downVal">$10,000</div>
     <div class="range-limits"><span>$0</span><span>$200,000+</span></div>
@@ -351,6 +450,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
       <div class="result-stat-box"><div class="stat-label">Rate Used</div><div class="stat-value" id="statRate">7.00%</div><div class="stat-note">30-yr estimate</div></div>
     </div>
   </div>
+  <div class="closing-cost-box" id="closingCostBox">
+    <strong>🏷️ Estimated Closing Costs:</strong> <span id="closingCostRange">—</span>
+    <br><small style="color:#4a6a8a;">Typically 2–5% of loan amount. Includes lender fees, title, appraisal, prepaid insurance & taxes. Ask Steven for a detailed estimate.</small>
+  </div>
+  <div class="loan-scorecard" id="loanScorecard" style="display:none;"></div>
   <div class="disclaimer-box">
     <strong>⚠️ Disclaimer:</strong> This is an <strong>ESTIMATE ONLY</strong> and is NOT a pre-approval, pre-qualification, or loan commitment of any kind. No credit check was performed. Actual qualification is determined solely by a licensed mortgage lender following a full application, credit review, and underwriting process. Consult a licensed lender for official pre-approval. Results based on self-reported data and 2025 TN lending guidelines.
   </div>
@@ -361,7 +465,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
     <button class="btn-schedule" onclick="openSchedule()">📅 Schedule a Free Consultation</button>
   </div>
   <div style="text-align:center;margin-top:16px;">
-    <button class="btn-print" onclick="printResults()">🖶️ Print / Save PDF</button>
+    <button class="btn-share" onclick="shareLink()">🔗 Share This Tool</button>
+  <button class="btn-print" onclick="printResults()">🖶️ Print / Save PDF</button>
   <button class="btn-outline" onclick="startOver()">Start Over</button>
   </div>
 </div>
@@ -475,6 +580,7 @@ function step1Next(){
 function step2Next(){
   saveProgress();
   if(!document.getElementById('fname').value.trim()){showErr('alertStep2','Please enter your full name.');return;}
+  var tl=document.getElementById('ftimeline');if(tl&&!tl.value){showErr('alertStep2','Please select when you are looking to buy or refinance.');return;}
   var e=document.getElementById('femail').value.trim();
   if(!e||!e.includes('@')){showErr('alertStep2','Please enter a valid email address.');return;}
   if(!document.getElementById('fphone').value.trim()){showErr('alertStep2','Please enter your phone number.');return;}
@@ -524,7 +630,10 @@ function collectData(){
     rural:getR('rural'),
     ftb:getR('ftb'),
     own:getR('own'),
-    loan:selLoan
+    loan:selLoan,
+    timeline:document.getElementById('ftimeline')?document.getElementById('ftimeline').value:'',
+    agent:document.getElementById('fagent')?document.getElementById('fagent').value:'',
+    source:document.getElementById('fsource')?document.getElementById('fsource').value:''
   };
 }
 
@@ -547,7 +656,10 @@ function sendLeadEmail(){
     +'Intended Use: '+fd.use+'\n'
     +'Location: '+fd.rural+'\n'
     +'First-Time Buyer: '+fd.ftb+'\n'
-    +'Bankruptcy/Foreclosure: '+fd.bk+'\n\n'
+    +'Bankruptcy/Foreclosure: '+fd.bk+'\n'
+  +'Purchase Timeline: '+(fd.timeline||'Not specified')+'\n'
+  +'Working with Agent: '+(fd.agent||'Not specified')+'\n'
+  +'How They Found Us: '+(fd.source||'Not specified')+'\n\n'
     +'Submitted from: Home Loan Qualifier Tool\n'
     +'Date: '+new Date().toLocaleString();
 
@@ -572,6 +684,9 @@ function sendLeadEmail(){
       first_time_buyer:fd.ftb,
       bankruptcy:fd.bk,
       full_details:body,
+      purchase_timeline:fd.timeline||'Not specified',
+      working_with_agent:fd.agent||'Not specified',
+      lead_source:fd.source||'Not specified',
       _replyto:fd.email
     })
   }).then(function(r){console.log('Lead sent',r.status);}).catch(function(e){console.warn('Email error:',e);});
@@ -635,7 +750,50 @@ function calcResults(){
   var dEl=document.getElementById('statDTI');
   if(mEl)mEl.textContent=maxPay>0?'$'+Math.round(maxPay).toLocaleString('en-US')+'/mo':'N/A';
   if(dEl){var dPct=mo>0?Math.round(((d.debt+maxPay)/mo)*100):0;dEl.textContent=dPct>0?dPct+'%':'N/A';dEl.style.color=dPct>43?'#c0392b':dPct>36?'#b56b00':'#1a7a35';}
+  // Closing cost estimate
+  var ccEl=document.getElementById('closingCostBox');
+  if(ccEl&&total>0){
+    var ccLow=Math.round(total*0.02/500)*500;
+    var ccHigh=Math.round(total*0.05/500)*500;
+    var ccSpan=document.getElementById('closingCostRange');
+    if(ccSpan)ccSpan.textContent='$'+ccLow.toLocaleString('en-US')+' – $'+ccHigh.toLocaleString('en-US');
+  }
+  // Loan fit scorecard
+  buildScorecard(d,mo,status);
   buildSuggestions(status,d,crOk,dnOk,mo,minCr,minDnAmt);
+}
+
+function buildScorecard(d,mo,status){
+  var el=document.getElementById('loanScorecard');
+  if(!el)return;
+  var loans=[
+    {k:'FHA',minCr:580,minDn:0.035,label:'FHA Loan'},
+    {k:'Conventional',minCr:620,minDn:0.03,label:'Conventional'},
+    {k:'VA',minCr:620,minDn:0,label:'VA Loan',needsVA:true},
+    {k:'USDA',minCr:640,minDn:0,label:'USDA Loan',needsRural:true}
+  ];
+  var html='<div class="scorecard-title">📊 Loan Fit Scorecard</div>';
+  var cr=d.credit||680;
+  var dnPct=d.price>0?d.down/d.price:0;
+  var isVA=d.emp==='military'||d.emp==='veteran';
+  var isRural=d.rural==='rural';
+  loans.forEach(function(ln){
+    var crOk2=cr>=ln.minCr;
+    var dnOk2=dnPct>=ln.minDn||ln.minDn===0;
+    var vaOk=!ln.needsVA||isVA;
+    var ruralOk=!ln.needsRural||isRural;
+    var fit=crOk2&&dnOk2&&vaOk&&ruralOk?'good':(crOk2&&vaOk&&ruralOk?'ok':'no');
+    var label=fit==='good'?'✅ Good Fit':fit==='ok'?'⚠️ Borderline':'❌ Not Eligible';
+    var cls='score-fit-'+fit;
+    var reason='';
+    if(!crOk2)reason=' (credit too low)';
+    else if(!dnOk2)reason=' (need more down)';
+    else if(!vaOk)reason=' (VA eligibility needed)';
+    else if(!ruralOk)reason=' (rural area required)';
+    html+='<div class="scorecard-row"><span>'+ln.label+'</span><span class="'+cls+'">'+label+reason+'</span></div>';
+  });
+  el.innerHTML=html;
+  el.style.display='block';
 }
 
 function buildSuggestions(status,d,crOk,dnOk,mo,minCr,minDnAmt){
@@ -735,6 +893,68 @@ function startOver(){
   try{localStorage.removeItem('hlq_p');}catch(e){}
   goStep(1);
 }
+function fmtPhone(el){
+  var v=el.value.replace(/\D/g,'');
+  if(v.length>=10)v=v.substring(0,10);
+  if(v.length>6)el.value='('+v.substring(0,3)+') '+v.substring(3,6)+'-'+v.substring(6);
+  else if(v.length>3)el.value='('+v.substring(0,3)+') '+v.substring(3);
+  else if(v.length>0)el.value='('+v;
+}
+function shareLink(){
+  var url='https://sbenefield-star.github.io/home-loan-qualifier/';
+  if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){showShareToast();});}
+  else{var t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);showShareToast();}
+}
+function showShareToast(){
+  var t=document.getElementById('shareToast');
+  if(!t)return;
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3000);
+}
+function openChooseModal(){document.getElementById('chooseModal').classList.add('open');}
+function closeChooseModal(){document.getElementById('chooseModal').classList.remove('open');}
+function selectLoanByKey(key){
+  var btn=document.querySelector('[data-loan="'+key+'"]');
+  if(btn){selectLoan(btn);closeChooseModal();}
+}
+function applyChooseResult(){
+  var q1=document.querySelector('[name="cq1"]:checked');
+  var q2=document.querySelector('[name="cq2"]:checked');
+  var q3=document.querySelector('[name="cq3"]:checked');
+  var q4=document.querySelector('[name="cq4"]:checked');
+  var v1=q1?q1.value:'';var v2=q2?q2.value:'';var v3=q3?q3.value:'';var v4=q4?q4.value:'';
+  var rec='fha';
+  if(v1==='yes')rec='va';
+  else if(v4==='refi')rec='refinance';
+  else if(v4==='build')rec='construction';
+  else if(v4==='invest')rec='investment';
+  else if(v2==='yes'&&v3!=='poor')rec='usda';
+  else if(v3==='good')rec='conventional';
+  else rec='fha';
+  var resEl=document.getElementById('chooseResult');
+  if(resEl){
+    var names={fha:'FHA Loan',va:'VA Loan',refinance:'Refinance',construction:'Construction',investment:'Investment',usda:'USDA Loan',conventional:'Conventional'};
+    resEl.style.display='block';
+    resEl.innerHTML='<strong>🎯 Recommended: '+names[rec]+'</strong><br>Based on your answers, this is likely your best starting point. You can always change it on Step 1.';
+    window._chooseRec=rec;
+  }
+}
+function checkVABanner(){
+  var emp=getR('emp');
+  var banner=document.getElementById('vaBanner');
+  if(!banner)return;
+  if(emp==='military'||emp==='veteran'||emp===''){
+    banner.style.display='flex';
+  } else {
+    banner.style.display='none';
+  }
+}
+// Patch applyChooseResult to auto-select on second click
+var _origApply=applyChooseResult;
+applyChooseResult=function(){
+  _origApply();
+  if(window._chooseRec){selectLoanByKey(window._chooseRec);}
+};
 function printResults(){window.print();}
 function saveProgress(){
   try{
@@ -751,7 +971,10 @@ function saveProgress(){
       pr:document.getElementById('fprice').value,
       emp:getR('emp'),cr:getR('credit'),bk:getR('bk'),
       pt:getR('propType'),us:getR('use'),ru:getR('rural'),
-      fb:getR('ftb'),ow:getR('own'),cs:curStep
+      fb:getR('ftb'),ow:getR('own'),cs:curStep,
+      tl:document.getElementById('ftimeline')?document.getElementById('ftimeline').value:'',
+      ag:document.getElementById('fagent')?document.getElementById('fagent').value:'',
+      sc:document.getElementById('fsource')?document.getElementById('fsource').value:''
     };
     localStorage.setItem('hlq_p',JSON.stringify(state));
   }catch(e){}
@@ -762,7 +985,7 @@ function loadProgress(){
     if(!sv)return;
     var s=JSON.parse(sv);
     if(s.loan){var b=document.querySelector('[data-loan="'+s.loan+'"]');if(b)selectLoan(b);}
-    var flds=[['fname',s.nm],['femail',s.em],['fphone',s.ph],['fcontact',s.ct],['fyears',s.yr]];
+    var flds=[['fname',s.nm],['femail',s.em],['fphone',s.ph],['fcontact',s.ct],['fyears',s.yr],['ftimeline',s.tl],['fagent',s.ag],['fsource',s.sc]];
     flds.forEach(function(f){var el=document.getElementById(f[0]);if(el&&f[1])el.value=f[1];});
     var sliders=[['fincome',s.inc,'incomeVal'],['fdebt',s.dbt,'debtVal'],['fdown',s.dn,'downVal'],['fprice',s.pr,'priceVal']];
     sliders.forEach(function(f){if(f[1]){var el=document.getElementById(f[0]);if(el){el.value=f[1];var ve=document.getElementById(f[2]);if(ve)ve.textContent='$'+parseInt(f[1]).toLocaleString('en-US');}}});
@@ -771,7 +994,52 @@ function loadProgress(){
     if(s.cs&&s.cs>1&&s.cs<6)goStep(s.cs);
   }catch(e){}
 }
-window.addEventListener('DOMContentLoaded',loadProgress);
+window.addEventListener('DOMContentLoaded',function(){
+  loadProgress();
+  // Show VA banner if military/veteran employment selected
+  document.querySelectorAll('[name="emp"]').forEach(function(r){
+    r.addEventListener('change',checkVABanner);
+  });
+  // Show VA banner by default for Clarksville (Fort Campbell area)
+  var banner=document.getElementById('vaBanner');
+  if(banner)banner.style.display='flex';
+});
 </script>
+<div class="share-toast" id="shareToast">✅ Link copied to clipboard!</div>
+<!-- Help Me Choose Modal -->
+<div class="choose-modal" id="chooseModal">
+  <div class="choose-inner">
+    <h3>🤔 Help Me Find the Right Loan</h3>
+    <div class="choose-q">
+      <label>Are you active military, a veteran, or surviving spouse?</label>
+      <label class="choose-opt"><input type="radio" name="cq1" value="yes"> Yes — I served / am serving</label>
+      <label class="choose-opt"><input type="radio" name="cq1" value="no"> No</label>
+    </div>
+    <div class="choose-q">
+      <label>Is the property in a rural or suburban area?</label>
+      <label class="choose-opt"><input type="radio" name="cq2" value="yes"> Yes — rural / small town</label>
+      <label class="choose-opt"><input type="radio" name="cq2" value="no"> No — city / suburb</label>
+      <label class="choose-opt"><input type="radio" name="cq2" value="unsure"> Not sure</label>
+    </div>
+    <div class="choose-q">
+      <label>What is your credit situation?</label>
+      <label class="choose-opt"><input type="radio" name="cq3" value="good"> Good (680+)</label>
+      <label class="choose-opt"><input type="radio" name="cq3" value="fair"> Fair (580–679)</label>
+      <label class="choose-opt"><input type="radio" name="cq3" value="poor"> Below 580 or not sure</label>
+    </div>
+    <div class="choose-q">
+      <label>What are you trying to do?</label>
+      <label class="choose-opt"><input type="radio" name="cq4" value="buy"> Buy a home</label>
+      <label class="choose-opt"><input type="radio" name="cq4" value="refi"> Refinance existing home</label>
+      <label class="choose-opt"><input type="radio" name="cq4" value="build"> Build or renovate</label>
+      <label class="choose-opt"><input type="radio" name="cq4" value="invest"> Buy investment / commercial</label>
+    </div>
+    <div id="chooseResult" style="display:none;background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:12px;margin-bottom:14px;font-size:0.85rem;"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="applyChooseResult()">Use This Loan Type ›</button>
+      <button class="btn-secondary" onclick="closeChooseModal()">Cancel</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
