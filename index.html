@@ -119,6 +119,34 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
 .alert-success{background:#e6f9ed;color:#1a7a35;border:1px solid #27ae60;}
 .spinner{display:none;text-align:center;padding:20px;color:#666;font-size:0.9rem;}
 .spinner.show{display:block;}
+
+/* ---- Progress percentage ---- */
+.progress-pct{text-align:center;font-size:0.72rem;color:#888;margin-bottom:6px;letter-spacing:0.04em;}
+.progress-fill-bar{height:4px;background:#eee;border-radius:2px;margin:0 0 20px;overflow:hidden;}
+.progress-fill-bar-inner{height:100%;background:#CC0000;border-radius:2px;transition:width 0.4s ease;}
+/* ---- Welcome intro card ---- */
+.welcome-card{background:linear-gradient(135deg,#111 0%,#1a1a1a 100%);color:#fff;border-radius:12px;padding:22px 24px;margin-bottom:22px;display:flex;align-items:center;gap:18px;}
+.welcome-avatar{width:58px;height:58px;border-radius:50%;border:2px solid #CC0000;object-fit:cover;flex-shrink:0;background:#333;display:flex;align-items:center;justify-content:center;font-size:1.6rem;}
+.welcome-text h3{margin:0 0 5px;font-size:1rem;color:#fff;}
+.welcome-text p{margin:0;font-size:0.8rem;color:#bbb;line-height:1.5;}
+.welcome-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.welcome-badge{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 10px;font-size:0.7rem;color:#ddd;}
+/* ---- Clickable done steps ---- */
+.step-num.done{cursor:pointer;transition:transform 0.15s,background 0.15s;}
+.step-num.done:hover{transform:scale(1.15);background:#CC0000;}
+/* ---- QR code section ---- */
+.qr-section{background:#f9f9f9;border:1px solid #e5e5e5;border-radius:8px;padding:14px 18px;margin-top:14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.qr-section canvas{border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.12);border-radius:4px;}
+.qr-text{flex:1;min-width:180px;}
+.qr-text h4{margin:0 0 4px;font-size:0.88rem;font-weight:700;}
+.qr-text p{margin:0;font-size:0.76rem;color:#666;line-height:1.4;}
+.btn-qr{background:#111;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:0.8rem;font-weight:600;cursor:pointer;margin-top:8px;transition:background 0.2s;}
+.btn-qr:hover{background:#CC0000;}
+/* ---- Rate context note ---- */
+.rate-disclaimer{text-align:center;font-size:0.7rem;color:#999;margin:6px 0 0;}
+/* ---- Honeypot (hidden) ---- */
+.ohnohoney{opacity:0;position:absolute;top:0;left:0;height:0;width:0;z-index:-1;}
+
 @media print{
   .header,.step-nav,.btn-print,.btn-schedule,.btn-outline,.disclaimer-box{display:none!important;}
   .step{display:block!important;}
@@ -172,6 +200,22 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
 
 }
 </style>
+<!-- ================================================
+  GOOGLE ANALYTICS — FREE SETUP (5 minutes)
+  1. Go to analytics.google.com and sign in with your Google account
+  2. Click Admin > Create Property > Web
+  3. Enter site URL: sbenefield-star.github.io/home-loan-qualifier
+  4. Copy your Measurement ID (looks like G-XXXXXXXXXX)
+  5. Replace G-XXXXXXXXXX below with your real ID, then commit
+  ================================================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script> -->
 </head><body>
 <div class="header">
   <div class="header-logo">
@@ -203,7 +247,22 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
 
 <!-- STEP 1 -->
 <div class="step active" id="step1">
+<div class="welcome-card">
+  <div class="welcome-avatar">👨‍💼</div>
+  <div class="welcome-text">
+    <h3>Hi, I'm Steven Benefield — KW Clarksville</h3>
+    <p>This free tool takes about <strong>2 minutes</strong> and shows you which home loans you may qualify for — with no credit check and no obligation.</p>
+    <div class="welcome-badges">
+      <span class="welcome-badge">✅ No Credit Check</span>
+      <span class="welcome-badge">🔒 Your Info is Private</span>
+      <span class="welcome-badge">⚡ 2-Minute Estimate</span>
+      <span class="welcome-badge">💯 100% Free</span>
+    </div>
+  </div>
+</div>
 <div class="card">
+  <div class="progress-pct" id="progressPct">Step 1 of 6 — 17% Complete</div>
+  <div class="progress-fill-bar"><div class="progress-fill-bar-inner" id="progressFill" style="width:17%;"></div></div>
   <h2>What type of loan are you looking for?</h2>
   <p class="subtitle">Select a loan type to learn what it is and how it works, then continue to see if you may qualify.</p>
   <div id="alertStep1" class="alert alert-error"></div>
@@ -240,9 +299,12 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
 <!-- STEP 2 -->
 <div class="step" id="step2">
 <div class="card">
+  <div class="progress-pct" id="progressPct">Step 2 of 6 — 33% Complete</div>
+  <div class="progress-fill-bar"><div class="progress-fill-bar-inner" id="progressFill" style="width:33%;"></div></div>
   <h2>Tell Us About Yourself</h2>
   <p class="subtitle">This information is required to view your estimate and will be sent to Steven so he can follow up with you.</p>
   <div id="alertStep2" class="alert alert-error"></div>
+  <div class="ohnohoney" aria-hidden="true"><input type="text" name="_honey" tabindex="-1" autocomplete="off"></div>
   <div class="form-row">
     <div class="form-group"><label>Full Name <span class="req">*</span></label><input type="text" id="fname" placeholder="John Smith"></div>
     <div class="form-group"><label>Email Address <span class="req">*</span></label><input type="email" id="femail" placeholder="john@email.com"></div>
@@ -303,6 +365,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
 <!-- STEP 3 -->
 <div class="step" id="step3">
 <div class="card">
+  <div class="progress-pct" id="progressPct">Step 3 of 6 — 50% Complete</div>
+  <div class="progress-fill-bar"><div class="progress-fill-bar-inner" id="progressFill" style="width:50%;"></div></div>
   <h2>Financial Overview</h2>
   <p class="subtitle">Your answers help calculate a qualification estimate. All figures are self-reported estimates only.</p>
   <div id="alertStep3" class="alert alert-error"></div>
@@ -349,6 +413,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
 <!-- STEP 4 -->
 <div class="step" id="step4">
 <div class="card">
+  <div class="progress-pct" id="progressPct">Step 4 of 6 — 67% Complete</div>
+  <div class="progress-fill-bar"><div class="progress-fill-bar-inner" id="progressFill" style="width:67%;"></div></div>
   <h2>Property Details</h2>
   <p class="subtitle">Tell us about the property you are looking to purchase, build, or refinance.</p>
   <div id="alertStep4" class="alert alert-error"></div>
@@ -410,6 +476,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
 <!-- STEP 5 CONSENT -->
 <div class="step" id="step5">
 <div class="card">
+  <div class="progress-pct" id="progressPct">Step 5 of 6 — 83% Complete</div>
+  <div class="progress-fill-bar"><div class="progress-fill-bar-inner" id="progressFill" style="width:83%;"></div></div>
   <h2>Review & Consent</h2>
   <p class="subtitle">Please read the full disclosure and check both boxes to proceed. Your information will be sent to Steven Benefield for follow-up.</p>
   <div class="consent-scroll">
@@ -449,6 +517,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
       <div class="result-stat-box"><div class="stat-label">Your Est. DTI</div><div class="stat-value" id="statDTI">—</div><div class="stat-note">Debt-to-Income</div></div>
       <div class="result-stat-box"><div class="stat-label">Rate Used</div><div class="stat-value" id="statRate">7.00%</div><div class="stat-note">30-yr estimate</div></div>
     </div>
+    <p class="rate-disclaimer">⚠️ Monthly payment uses an estimated 7% rate. <a href="https://www.freddiemac.com/pmms" target="_blank" style="color:#CC0000;text-decoration:none;">Check today's rates →</a></p>
   </div>
   <div class="closing-cost-box" id="closingCostBox">
     <strong>🏷️ Estimated Closing Costs:</strong> <span id="closingCostRange">—</span>
@@ -468,6 +537,14 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222;}
     <button class="btn-share" onclick="shareLink()">🔗 Share This Tool</button>
   <button class="btn-print" onclick="printResults()">🖶️ Print / Save PDF</button>
   <button class="btn-outline" onclick="startOver()">Start Over</button>
+  </div>
+  <div class="qr-section" id="qrSection" style="margin-top:16px;">
+    <div id="qrCanvas"></div>
+    <div class="qr-text">
+      <h4>📱 Share via QR Code</h4>
+      <p>Print this QR code and put it on yard signs, business cards, or open house flyers. Buyers scan it to get their instant loan estimate.</p>
+      <button class="btn-qr" onclick="downloadQR()">📥 Download QR Code</button>
+    </div>
   </div>
 </div>
 </div>
@@ -564,7 +641,7 @@ function goStep(n){
   document.getElementById('step'+n).classList.add('active');
   for(var i=1;i<=6;i++){
     var sn=document.getElementById('sn'+i),sl=document.getElementById('sl'+i);
-    if(i<n){sn.className='step-num done';sl.className='step-label';}
+    if(i<n){sn.className='step-num done';sn.title='Go back to step '+i;sn.onclick=function(){var s=parseInt(this.id.replace('sn',''));if(s<curStep)goStep(s);};sl.className='step-label';}
     else if(i===n){sn.className='step-num active';sl.className='step-label active';}
     else{sn.className='step-num';sl.className='step-label';}
   }
@@ -602,6 +679,9 @@ function step4Next(){
 }
 
 function submitForm(){
+  // Honeypot check - bots fill hidden fields
+  var honey=document.querySelector('[name="_honey"]');
+  if(honey&&honey.value){return;}
   if(!document.getElementById('consent1').checked||!document.getElementById('consent2').checked){
     showErr('alertStep5','Please check both consent boxes to continue.');return;
   }
@@ -609,6 +689,7 @@ function submitForm(){
   sendLeadEmail();
   calcResults();
   goStep(6);
+  setTimeout(generateQR, 200);
 }
 
 function collectData(){
@@ -639,35 +720,35 @@ function collectData(){
 
 function sendLeadEmail(){
   var lnames={fha:'FHA Loan',conventional:'Conventional Loan',va:'VA Loan',usda:'USDA Loan',investment:'Investment Property',commercial:'Commercial Loan',refinance:'Refinance',jumbo:'Jumbo Loan',construction:'Construction Loan',renovation:'FHA 203k Renovation'};
-  var body='NEW LEAD FROM HOME LOAN QUALIFIER TOOL\n\n'
-    +'Name: '+fd.name+'\n'
-    +'Email: '+fd.email+'\n'
-    +'Phone: '+fd.phone+'\n'
-    +'Best Time to Contact: '+(fd.contactTime||'Not specified')+'\n'
-    +'Loan Type: '+(lnames[fd.loan]||fd.loan)+'\n'
-    +'Employment: '+fd.emp+'\n'
-    +'Years at Job: '+fd.years+'\n'
+  var body='=== 🏠 NEW HOME LOAN LEAD ===\n\n'
+    +'👤 NAME: '+fd.name+'\n'
+    +'📞 PHONE: '+fd.phone+' (Best time: '+(fd.contactTime||'Anytime')+')\n'
+    +'✉️  EMAIL: '+fd.email+'\n'
+    +'⏰ TIMELINE: '+(fd.timeline==='asap'?'🔥 ASAP (0-3 months)':fd.timeline==='soon'?'3-6 months':fd.timeline==='planning'?'6-12 months':fd.timeline==='researching'?'Just researching':'Not specified')+'\n'
+    +'🏦 LOAN TYPE: '+(lnames[fd.loan]||fd.loan)+'\n'
+    +'🏡 WORKING WITH AGENT: '+(fd.agent==='no'?'❌ No — needs one':fd.agent==='yes'?'✅ Yes — has one':'Not specified')+'\n\n'
+    +'--- FINANCIAL SNAPSHOT ---\n'
     +'Annual Income: $'+fd.income.toLocaleString()+'\n'
     +'Monthly Debt: $'+fd.debt.toLocaleString()+'\n'
-    +'Credit Score Range: '+(fd.credit>0?fd.credit+'+':'Not Sure')+'\n'
+    +'Credit Score: '+(fd.credit>0?fd.credit+'+':'Not Sure')+'\n'
     +'Down Payment: $'+fd.down.toLocaleString()+'\n'
     +'Purchase Price: $'+fd.price.toLocaleString()+'\n'
-    +'Property Type: '+fd.propType+'\n'
-    +'Intended Use: '+fd.use+'\n'
-    +'Location: '+fd.rural+'\n'
-    +'First-Time Buyer: '+fd.ftb+'\n'
-    +'Bankruptcy/Foreclosure: '+fd.bk+'\n'
-  +'Purchase Timeline: '+(fd.timeline||'Not specified')+'\n'
-  +'Working with Agent: '+(fd.agent||'Not specified')+'\n'
-  +'How They Found Us: '+(fd.source||'Not specified')+'\n\n'
-    +'Submitted from: Home Loan Qualifier Tool\n'
-    +'Date: '+new Date().toLocaleString();
+    +'Employment: '+fd.emp+' ('+fd.years+' yrs)\n'
+    +'Bankruptcy/Foreclosure: '+fd.bk+'\n\n'
+    +'--- PROPERTY ---\n'
+    +'Type: '+fd.propType+' | Use: '+fd.use+'\n'
+    +'Location: '+fd.rural+' | First-Time Buyer: '+fd.ftb+'\n\n'
+    +'--- HOW THEY FOUND YOU ---\n'
+    +'Source: '+(fd.source||'Not specified')+'\n\n'
+    +'Submitted: '+new Date().toLocaleString();
 
   fetch('https://formsubmit.co/ajax/s.benefield@kw.com',{
     method:'POST',
     headers:{'Content-Type':'application/json','Accept':'application/json'},
     body:JSON.stringify({
-      _subject:'🏠 New Home Loan Lead: '+fd.name+' — '+( lnames[fd.loan]||fd.loan),
+      _subject:'🏠 '+(fd.timeline==='asap'?'🔥 HOT LEAD':'New Lead')+': '+fd.name+' — '+(lnames[fd.loan]||fd.loan)+(fd.timeline==='asap'?' [WANTS TO BUY ASAP]':fd.timeline==='soon'?' [3-6 months]':''),
+      _captcha:'false',
+      _template:'table',
       name:fd.name,
       email:fd.email,
       phone:fd.phone,
@@ -955,6 +1036,27 @@ applyChooseResult=function(){
   _origApply();
   if(window._chooseRec){selectLoanByKey(window._chooseRec);}
 };
+function generateQR(){
+  var el=document.getElementById('qrCanvas');
+  if(!el||!window.QRCode)return;
+  el.innerHTML='';
+  try{
+    new QRCode(el,{
+      text:'https://sbenefield-star.github.io/home-loan-qualifier/',
+      width:100,height:100,
+      colorDark:'#000000',colorLight:'#ffffff',
+      correctLevel:QRCode.CorrectLevel.H
+    });
+  }catch(e){}
+}
+function downloadQR(){
+  var canvas=document.querySelector('#qrCanvas canvas');
+  if(!canvas){alert('QR code not ready yet. Please wait a moment.');return;}
+  var link=document.createElement('a');
+  link.download='steven-benefield-kw-qr.png';
+  link.href=canvas.toDataURL('image/png');
+  link.click();
+}
 function printResults(){window.print();}
 function saveProgress(){
   try{
